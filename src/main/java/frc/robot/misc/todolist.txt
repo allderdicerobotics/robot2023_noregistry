@@ -1,0 +1,9 @@
+TODO:
+
+Verify encoders work correctly
+    make sure voltage looks correct
+    ensure angles go from 0 to 360
+    steering pid runs on rio 
+rerun last years code
+look into kinematics for the swervedrive (are motors swapped)
+(look at inital motor values and how they change)
