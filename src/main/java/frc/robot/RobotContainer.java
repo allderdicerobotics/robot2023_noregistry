@@ -95,7 +95,7 @@ public class RobotContainer {
                     false),
             m_robotDrive));
     
-    m_wheelClaw.setDefaultCommand(new RunCommand(() -> m_wheelClaw.spinStop(), m_wheelClaw));
+    m_wheelClaw.setDefaultCommand(new RunCommand(() -> m_wheelClaw.spinInSlowly(), m_wheelClaw));
   }
 
   /**
@@ -184,3 +184,4 @@ public class RobotContainer {
     return(new InstantCommand());
   }
 }
+// hey guys how are you- audrey (i snuck into the code)
