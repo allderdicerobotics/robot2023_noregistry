@@ -55,9 +55,9 @@ public class SwerveModule {
         turningMotor.restoreFactoryDefaults();
         
         
-        driveMotor.setSmartCurrentLimit(80);
+        driveMotor.setSmartCurrentLimit(20);
         
-        turningMotor.setSmartCurrentLimit(30);
+        turningMotor.setSmartCurrentLimit(20);
 
         turningMotor.setInverted(true);
         if (name != "BL" || name != "BR"){
@@ -138,7 +138,7 @@ public class SwerveModule {
 
     public SwerveModulePosition getPosition() {
         return new SwerveModulePosition(
-            driveEncoder.getPosition(), turningEncoder.get()
+            Constants.Prop.Drivetrain.WHEEL_ROT_TO_M.apply(driveEncoder.getPosition()), turningEncoder.get()
         );
     }
 

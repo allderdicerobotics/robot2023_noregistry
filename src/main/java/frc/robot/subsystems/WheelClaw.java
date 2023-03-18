@@ -44,7 +44,7 @@ public class WheelClaw extends SubsystemBase {
     public void spinIn() {
         // TODO FIXME change to actual value
         // System.out.println("spinIn");
-        setVelocity(0.25);
+        setVelocity(0.5);
     }
 
     public void spinOut() {
@@ -55,6 +55,11 @@ public class WheelClaw extends SubsystemBase {
     public void spinStop() {
         // System.out.println("spinStop");
         setVelocity(0.0);
+    }
+
+    public void spinInSlowly() {
+        // System.out.println("spinStop");
+        setVelocity(0.08);
     }
 
     void setVelocity(double setpoint) {

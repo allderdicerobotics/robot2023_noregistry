@@ -35,7 +35,12 @@ import java.util.List;
 
 import org.photonvision.PhotonCamera;
 
-import com.fasterxml.jackson.databind.introspect.ConcreteBeanPropertyBase;
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -45,13 +50,37 @@ import com.fasterxml.jackson.databind.introspect.ConcreteBeanPropertyBase;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final WheelClaw m_wheelClaw = new WheelClaw();
-  private final Arm m_arm = new Arm();
-  private final Tower m_tower = new Tower();
-  private final PhotonCamera snakeEyes = new PhotonCamera("snakeeyes");
-  private final PoseEstimatorSubsystem poseEstimatorSubsystem = new PoseEstimatorSubsystem(snakeEyes, m_robotDrive);
-  private final ArmSetpoints m_armSetpoints = new ArmSetpoints(m_arm, m_tower);
+  private final DriveSubsystem drive = new DriveSubsystem();
+  private final WheelClaw wheelClaw = new WheelClaw();
+  private final Arm arm = new Arm();
+  private final Tower tower = new Tower();
+  private final PhotonCamera photonCamera = new PhotonCamera("IMX219");
+  private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(photonCamera, drive);
+  private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
+
+
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("test", new PathConstraints(4, 3));
+  // This is just an example event map. It would be better to have a constant, global event map
+  // in your code that will be used by all path following commands.
+
+  //eventMap.put("marker1", new PrintCommand("Passed marker 1"));
+  // eventMap.put("intakeDown", new IntakeDown());
+
+  // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want to create an auto command. A good place to put this is in RobotContainer along with your subsystems.
+
+  SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+    poseEstimator::getCurrentPose,
+    poseEstimator::setCurrentPose,
+    drive.kinematics,
+    new PIDConstants(1, 0, 0),
+    new PIDConstants(0.1, 0, 0),
+    drive::setModuleStates,
+    null,
+    true,
+    drive
+  );
+
+  Command fullAuto = autoBuilder.followPath(examplePath);
 
   // The driver's controller
   PS4Controller m_driverController = new PS4Controller(Constants.Port.Driver.CONTROLLER);
@@ -83,19 +112,19 @@ public class RobotContainer {
     configureButtonBindings();
 
     // Configure default commands
-    m_robotDrive.setDefaultCommand(
+    drive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () ->
-                m_robotDrive.drive(
+                drive.drive(
                     -m_driverController.getLeftY(),
                     -m_driverController.getLeftX(),
                     -m_driverController.getRightX(),
-                    false),
-            m_robotDrive));
+                    true),
+            drive));
     
-    m_wheelClaw.setDefaultCommand(new RunCommand(() -> m_wheelClaw.spinInSlowly(), m_wheelClaw));
+    wheelClaw.setDefaultCommand(new RunCommand(() -> wheelClaw.spinInSlowly(), wheelClaw));
   }
 
   /**
@@ -108,28 +137,29 @@ public class RobotContainer {
     // new JoystickButton(m_driverController, Button.kA.value)
     //     .whileTrue(new InstantCommand(m_wheelClaw::spinIn));
     // joysticks
-    aButton.whileTrue(new RunCommand(() -> m_wheelClaw.spinIn(), m_wheelClaw));
-    xButton.whileTrue(new RunCommand(() -> m_wheelClaw.spinOut(), m_wheelClaw));
+    aButton.whileTrue(new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
+    xButton.whileTrue(new RunCommand(() -> wheelClaw.spinOut(), wheelClaw));
 
-    bButton.onTrue(new InstantCommand(() -> m_arm.changeDesiredState(10)));
-    yButton.onTrue(new InstantCommand(() -> m_arm.changeDesiredState(-10)));
+    bButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(10)));
+    yButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-10)));
 
-    leftBumper.onTrue(new InstantCommand(() -> m_tower.moveForward()));
-    rightBumper.onTrue(new InstantCommand(() -> m_tower.moveReverse()));
+    leftBumper.onTrue(new InstantCommand(() -> tower.moveForward()));
+    rightBumper.onTrue(new InstantCommand(() -> tower.moveReverse()));
 
 
     // button board
-    stowInButton.onTrue(m_armSetpoints.stowInside());
+    stowInButton.onTrue(armSetpoints.stowInside());
     //playerStationButton.onTrue(m_armSetpoints.playerStation());
 
-    cubePickupButton.onTrue(m_armSetpoints.cubeGround());
-    conePickupButton.onTrue(m_armSetpoints.coneGround());
+    cubePickupButton.onTrue(armSetpoints.cubeGround());
+    conePickupButton.onTrue(armSetpoints.coneGround());
 
-    cubeSecondButton.onTrue(m_armSetpoints.cubeSecondLevel());
-    coneSecondButton.onTrue(m_armSetpoints.coneSecondLevel());
+    cubeSecondButton.onTrue(armSetpoints.cubeSecondLevel());
+    coneSecondButton.onTrue(armSetpoints.coneSecondLevel());
 
-    cubeThirdButton.onTrue(m_armSetpoints.cubeThirdLevel());
-    coneThirdButton.onTrue(m_armSetpoints.coneThirdLevel());
+    cubeThirdButton.onTrue(armSetpoints.cubeThirdLevel());
+    coneThirdButton.onTrue(armSetpoints.coneThirdLevel());
+
   }
 
   /**
@@ -137,51 +167,8 @@ public class RobotContainer {
    *
    * @return the command to run in autonomous
    */ 
-   public Command getAutonomousCommand() {
-  /*   // Create config for trajectory
-    TrajectoryConfig config =
-        new TrajectoryConfig(
-                AutoConstants.kMaxSpeedMetersPerSecond,
-                AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-            // Add kinematics to ensure max speed is actually obeyed
-            .setKinematics(DriveConstants.kDriveKinematics);
-
-    // An example trajectory to follow.  All units in meters.
-    Trajectory exampleTrajectory =
-        TrajectoryGenerator.generateTrajectory(
-            // Start at the origin facing the +X direction
-            new Pose2d(0, 0, new Rotation2d(0)),
-            // Pass through these two interior waypoints, making an 's' curve path
-            List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-            // End 3 meters straight ahead of where we started, facing forward
-            new Pose2d(3, 0, new Rotation2d(0)),
-            config);
-
-    var thetaController =
-        new ProfiledPIDController(
-            AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand =
-        new SwerveControllerCommand(
-            exampleTrajectory,
-            m_robotDrive::getPose, // Functional interface to feed supplier
-            DriveConstants.kDriveKinematics,
-
-            // Position controllers
-            new PIDController(AutoConstants.kPXController, 0, 0),
-            new PIDController(AutoConstants.kPYController, 0, 0),
-            thetaController,
-            m_robotDrive::setModuleStates,
-            m_robotDrive);
-
-    // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
-    */
-    return(new InstantCommand());
+  public Command getAutonomousCommand() {
+    return fullAuto;
   }
 }
 // hey guys how are you- audrey (i snuck into the code)

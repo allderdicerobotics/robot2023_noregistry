@@ -10,6 +10,7 @@ import com.revrobotics.SparkMaxPIDController.ArbFFUnits;
 import com.ctre.phoenix.sensors.CANCoder;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -17,6 +18,7 @@ import com.revrobotics.RelativeEncoder;
 import frc.robot.misc.*;
 
 public class Arm extends SubsystemBase {
+    private DigitalInput hallEffect = new DigitalInput(2);
     private CANSparkMax armMotor = new CANSparkMax(Constants.Port.TowerArmClaw.CAN_ID_ARM, MotorType.kBrushless);
     private RelativeEncoder encoder;
 
@@ -151,6 +153,14 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
+        if(hallEffect.get()) {
+            System.out.println("on");
+         }
+         else {
+           System.out.println("off");
+         }
+     
+     
         SmartDashboard.putNumber("Arm Angle", encoder.getPosition());
         SmartDashboard.putNumber("Arm Setpoint", desiredPosition);
     }

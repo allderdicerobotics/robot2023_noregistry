@@ -82,13 +82,12 @@ public final class Constants {
 
         public static final class Drivetrain {
 
-            public static final SwerveDriveKinematics KINEMATICS = new SwerveDriveKinematics(
+            public static final Translation2d[] MODULE_LOCATIONS = {
                 new Translation2d(0.381, 0.381),
                 new Translation2d(0.381, -0.381),
                 new Translation2d(-0.381, 0.381),
                 new Translation2d(-0.381, -0.381)
-
-            );
+            };
 
             
             public static final double TURNING_ANG_VEL_MAX = Math.PI * 100;
@@ -103,11 +102,17 @@ public final class Constants {
                 2 * mps * (60 /( 2 * Math.PI * WHEEL_RADIUS)) * WHEEL_GEAR_RATIO
             );
 
-            public static final double CHASSIS_AXIS_SPEED_MAX = 5.0;
-            public static final double CHASSIS_AXIS_ACC_MAX = 0.05;
-            public static final double CHASSIS_AXIS_DEC_MAX = -1.0;
-            public static final double CHASSIS_ANG_VEL_MAX = Math.PI;
-            public static final double CHASSIS_ANG_ACC_MAX = 0.1;
+            public static final UnaryOperator<Double> WHEEL_ROT_TO_M = rot -> (
+                2 * rot * Math.PI * WHEEL_RADIUS/WHEEL_GEAR_RATIO
+            );
+
+            public static final double AXIS_SPEED_MAX = 5.0;
+            public static final double AXIS_ACC_MAX = 0.075;
+            public static final double AXIS_DEC_MAX = 0.5;
+
+            public static final double ANG_VEL_MAX = Math.PI;
+            public static final double ANG_ACC_MAX = 0.15;
+            public static final double ANG_DEC_MAX = 0.4;
 
             public static final boolean GYRO_REVERSED = false;
 
@@ -115,9 +120,9 @@ public final class Constants {
 
         public static final class SnakeEyesCamera {
 
-            public static final Transform3d XFORM_ROBOT_TO_CAMERA = new Transform3d(
+            public static final Transform3d CAMERA_TO_ROBOT = new Transform3d(
                 new Translation3d(),
-                new Rotation3d(Math.PI / 2, Math.PI / 2, 0.0)
+                new Rotation3d()
             );
 
         }

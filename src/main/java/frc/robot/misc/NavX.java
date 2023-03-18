@@ -6,7 +6,13 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.wpilibj.SerialPort;
 
 public class NavX {
-    private final AHRS ahrs = new AHRS(SerialPort.Port.kUSB);
+    public static AHRS ahrs = new AHRS(SerialPort.Port.kUSB);
+    public static double getRate(){
+        return ahrs.getRate();
+    }
+    public static Rotation2d getAngle(){
+        return ahrs.getRotation2d();
+    }
     // public get_quaternion(){
 
     // }

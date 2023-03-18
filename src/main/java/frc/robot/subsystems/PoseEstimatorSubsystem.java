@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 
@@ -61,7 +62,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
 
     private double previousPipelineTimestamp = 0;
 
-    public PoseEstimatorSubsystem(PhotonCamera photonCamera, DrivetrainSubsystem drivetrainSubsystem) {
+    public PoseEstimatorSubsystem(PhotonCamera photonCamera, DriveSubsystem drivetrainSubsystem) {
         this.photonCamera = photonCamera;
         this.drivetrainSubsystem = drivetrainSubsystem;
         AprilTagFieldLayout layout;
@@ -79,14 +80,14 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         ShuffleboardTab tab = Shuffleboard.getTab("Vision");
 
         poseEstimator = new SwerveDrivePoseEstimator(
-                DrivetrainConstants.KINEMATICS,
+                drivetrainSubsystem.kinematics,
                 drivetrainSubsystem.getGyroscopeRotation(),
                 drivetrainSubsystem.getModulePositions(),
                 new Pose2d(),
                 stateStdDevs,
                 visionMeasurementStdDevs);
 
-        tab.addString("Pose", this::getFomattedPose).withPosition(0, 0).withSize(2, 0);
+        tab.addString("Pose", this::getFormattedPose).withPosition(0, 0).withSize(2, 0);
         tab.add("Field", field2d).withPosition(2, 0).withSize(6, 4);
     }
 
@@ -108,7 +109,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
                 Transform3d camToTarget = target.getBestCameraToTarget();
                 Pose3d camPose = targetPose.transformBy(camToTarget.inverse());
 
-                var visionMeasurement = camPose.transformBy(CAMERA_TO_ROBOT);
+                var visionMeasurement = camPose.transformBy(Constants.Prop.SnakeEyesCamera.CAMERA_TO_ROBOT);
                 poseEstimator.addVisionMeasurement(visionMeasurement.toPose2d(), resultTimestamp);
             }
         }
@@ -118,9 +119,12 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
                 drivetrainSubsystem.getModulePositions());
 
         field2d.setRobotPose(getCurrentPose());
+        SmartDashboard.putNumber("X (relative to field)",getCurrentPose().getX() );
+        SmartDashboard.putNumber("Y (relative to field)",getCurrentPose().getY());
+        SmartDashboard.putNumber("Rotation (relative to field)",getCurrentPose().getRotation().getDegrees());
     }
 
-    private String getFomattedPose() {
+    private String getFormattedPose() {
         var pose = getCurrentPose();
         return String.format("(%.2f, %.2f) %.2f degrees",
                 pose.getX(),
