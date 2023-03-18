@@ -53,44 +53,44 @@ public class DriveSubsystem extends SubsystemBase {
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {}
 
-  @Override
-  public void periodic() {
-    // Update the odometry in the periodic block
-    m_odometry.update(
-        NavX.getAngle(),
-        new SwerveModulePosition[] {
-          swerveModules[0].getPosition(),
-          swerveModules[1].getPosition(),
-          swerveModules[2].getPosition(),
-          swerveModules[3].getPosition()
-        });
-  }
+  // @Override
+  // public void periodic() {
+  //   // Update the odometry in the periodic block
+  //   m_odometry.update(
+  //       NavX.getAngle(),
+  //       new SwerveModulePosition[] {
+  //         swerveModules[0].getPosition(),
+  //         swerveModules[1].getPosition(),
+  //         swerveModules[2].getPosition(),
+  //         swerveModules[3].getPosition()
+  //       });
+  // }
 
-  /**
-   * Returns the currently-estimated pose of the robot.
-   *
-   * @return The pose.
-   */
-  public Pose2d getPose() {
-    return m_odometry.getPoseMeters();
-  }
+  // /**
+  //  * Returns the currently-estimated pose of the robot.
+  //  *
+  //  * @return The pose.
+  //  */
+  // public Pose2d getPose() {
+  //   return m_odometry.getPoseMeters();
+  // }
 
-  /**
-   * Resets the odometry to the specified pose.
-   *
-   * @param pose The pose to which to set the odometry.
-   */
-  public void resetOdometry(Pose2d pose) {
-    m_odometry.resetPosition(
-        NavX.getAngle(),
-        new SwerveModulePosition[] {
-          swerveModules[0].getPosition(),
-          swerveModules[1].getPosition(),
-          swerveModules[2].getPosition(),
-          swerveModules[3].getPosition()
-        },
-        pose);
-  }
+  // /**
+  //  * Resets the odometry to the specified pose.
+  //  *
+  //  * @param pose The pose to which to set the odometry.
+  //  */
+  // public void resetOdometry(Pose2d pose) {
+  //   m_odometry.resetPosition(
+  //       NavX.getAngle(),
+  //       new SwerveModulePosition[] {
+  //         swerveModules[0].getPosition(),
+  //         swerveModules[1].getPosition(),
+  //         swerveModules[2].getPosition(),
+  //         swerveModules[3].getPosition()
+  //       },
+  //       pose);
+  // }
 
   /**
    * Method to drive the robot using joystick info.

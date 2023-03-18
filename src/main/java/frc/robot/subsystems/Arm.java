@@ -154,10 +154,10 @@ public class Arm extends SubsystemBase {
     @Override
     public void periodic() {
         if(hallEffect.get()) {
-            System.out.println("on");
+            //System.out.println("on");
          }
          else {
-           System.out.println("off");
+           //System.out.println("off");
          }
      
      

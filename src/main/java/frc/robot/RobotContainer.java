@@ -59,7 +59,7 @@ public class RobotContainer {
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
 
 
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("test", new PathConstraints(4, 3));
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("FullAuto", new PathConstraints(0.1, 0.1));
   // This is just an example event map. It would be better to have a constant, global event map
   // in your code that will be used by all path following commands.
 
@@ -72,15 +72,15 @@ public class RobotContainer {
     poseEstimator::getCurrentPose,
     poseEstimator::setCurrentPose,
     drive.kinematics,
-    new PIDConstants(1, 0, 0),
-    new PIDConstants(0.1, 0, 0),
+    new PIDConstants(0.5, 0, 0),
+    new PIDConstants(1.0, 0, 0),
     drive::setModuleStates,
     null,
     true,
     drive
   );
 
-  Command fullAuto = autoBuilder.followPath(examplePath);
+  Command fullAuto = autoBuilder.fullAuto(examplePath);
 
   // The driver's controller
   PS4Controller m_driverController = new PS4Controller(Constants.Port.Driver.CONTROLLER);
