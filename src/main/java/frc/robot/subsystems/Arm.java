@@ -96,16 +96,30 @@ public class Arm extends SubsystemBase {
             .setReference(
                 angle,
                 ControlType.kSmartMotion,
-                0, // TODO make sure this is the default PID slot
+                0, // 
                 ffVoltage,
                 ArbFFUnits.kVoltage
             ); 
             */
         
+        if (!hallEffect.get()) {
+            encoder.setPosition(0);
+            if (angle < encoder.getPosition()) {
+                return;
+            }
+        }
+
         SparkMaxPIDController pid = armMotor.getPIDController();
         pid.setReference(angle, CANSparkMax.ControlType.kSmartMotion);
         this.desiredPosition = angle;
-        
+    }
+
+    public double limitAccWhenArmUp() {
+        if (encoder.getPosition() > 50) {
+            double maxAcc = 0.0075;
+            return maxAcc; 
+        }
+        return desiredPosition;
     }
 
     public void changeDesiredState(double change) {
@@ -153,7 +167,7 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if(hallEffect.get()) {
+        if(!hallEffect.get()) {
             //System.out.println("on");
          }
          else {
