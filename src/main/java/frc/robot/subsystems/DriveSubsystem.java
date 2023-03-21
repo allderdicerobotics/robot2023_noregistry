@@ -57,7 +57,9 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	// @Override
-	// public void periodic() {
+	public void periodic() {
+		SmartDashboard.putNumber("current", swerveModules[0].driveMotor.getOutputCurrent());
+	}
 	// // Update the odometry in the periodic block
 	// m_odometry.update(
 	// NavX.getAngle(),

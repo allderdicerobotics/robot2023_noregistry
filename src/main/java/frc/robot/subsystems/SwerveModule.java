@@ -27,7 +27,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class SwerveModule {
     private final String name;
     // PidProperty PIDproperties;
-    private final CANSparkMax driveMotor;
+    public final CANSparkMax driveMotor;
     private final CANSparkMax turningMotor;
 
 
@@ -55,7 +55,7 @@ public class SwerveModule {
         turningMotor.restoreFactoryDefaults();
         
         
-        driveMotor.setSmartCurrentLimit(20);
+        driveMotor.setSmartCurrentLimit(40);
         
         turningMotor.setSmartCurrentLimit(20);
 

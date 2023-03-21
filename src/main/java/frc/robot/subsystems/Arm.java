@@ -69,7 +69,7 @@ public class Arm extends SubsystemBase {
         SparkMaxPIDController pid = armMotor.getPIDController();
         encoder = armMotor.getEncoder();
         int smartMotionSlot = 0;
-        pid.setP(0.0002);
+        pid.setP(0.0003);
         pid.setI(0.000001);
         pid.setD(0);
         pid.setIZone(0);
