@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.ArmSetpoints;
 import frc.robot.misc.Constants;
+import frc.robot.misc.ControlConstants;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveSubsystem;
@@ -156,9 +157,9 @@ public class RobotContainer {
       poseEstimator.getScorePath(),
       poseEstimator::getCurrentPose,
       drive.kinematics,
-      new PIDController(0.5, 0, 0),
-      new PIDController(1.0, 0, 0),
-      new PIDController(0, 0, 0),
+      new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD),
+      new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD),
+      new PIDController(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD),
       drive::setModuleStates,
       true,
       drive
