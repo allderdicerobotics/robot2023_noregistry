@@ -178,6 +178,9 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
             new PathPoint(newLoc.div(2), newRot.div(2)),
             new PathPoint(newLoc, newRot)
         );
+        SmartDashboard.putNumber("desiredX",newLoc.getX());
+        SmartDashboard.putNumber("desiredY",newLoc.getY());
+        
         return scoreTraj;
     }
 }
