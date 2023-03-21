@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
@@ -30,6 +31,7 @@ import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 
 /*
@@ -79,7 +81,7 @@ public class RobotContainer {
   Trigger aButton = new JoystickButton(m_driverController, 2);
   Trigger bButton = new JoystickButton(m_driverController, 3);
   Trigger yButton = new JoystickButton(m_driverController, 4);
-
+  Trigger scoreButton = new JoystickButton(m_driverController, 14);
   Trigger leftBumper = new JoystickButton(m_driverController, 5);
   Trigger rightBumper = new JoystickButton(m_driverController, 6);
   
@@ -150,6 +152,17 @@ public class RobotContainer {
     cubeThirdButton.onTrue(armSetpoints.cubeThirdLevel());
     coneThirdButton.onTrue(armSetpoints.coneThirdLevel());
 
+    scoreButton.onTrue(new PPSwerveControllerCommand(
+      poseEstimator.getScorePath(),
+      poseEstimator::getCurrentPose,
+      drive.kinematics,
+      new PIDController(0.5, 0, 0),
+      new PIDController(1.0, 0, 0),
+      new PIDController(0, 0, 0),
+      drive::setModuleStates,
+      true,
+      drive
+    ));
   }
 
   /**
