@@ -175,7 +175,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         Rotation2d newRot = new Rotation2d(0).minus(getCurrentPose().getRotation());
         PathPlannerTrajectory scoreTraj = PathPlanner.generatePath(
             new PathConstraints(4, 3),
-            new PathPoint(newLoc.div(2), newRot.div(2)),
+            new PathPoint(0, 0),
             new PathPoint(newLoc, newRot)
         );
         SmartDashboard.putNumber("desiredX",newLoc.getX());
