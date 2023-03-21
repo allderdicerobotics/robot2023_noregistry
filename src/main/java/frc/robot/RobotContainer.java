@@ -83,14 +83,14 @@ public class RobotContainer {
   Trigger leftBumper = new JoystickButton(m_driverController, 5);
   Trigger rightBumper = new JoystickButton(m_driverController, 6);
   
-  Trigger cubePickupButton = new JoystickButton(m_buttonBoard, 10);
+  Trigger cubePickupButton = new JoystickButton(m_buttonBoard,10);
   Trigger conePickupButton = new JoystickButton(m_buttonBoard, 6);
   Trigger stowInButton = new JoystickButton(m_buttonBoard, 11);
   //Trigger playerStationButton = new JoystickButton(m_buttonBoard, );
-  Trigger cubeSecondButton = new JoystickButton(m_buttonBoard, 4);
+  Trigger cubeSecondButton = new JoystickButton(m_buttonBoard, 8);
   Trigger coneSecondButton = new JoystickButton(m_buttonBoard, 7);
   // need more buttons
-  Trigger cubeThirdButton = new JoystickButton(m_buttonBoard, 12); 
+  Trigger cubeThirdButton = new JoystickButton(m_buttonBoard, 4); 
   Trigger coneThirdButton = new JoystickButton(m_buttonBoard, 9);
 
 
@@ -114,7 +114,7 @@ public class RobotContainer {
                     true),
             drive));
     
-    wheelClaw.setDefaultCommand(new RunCommand(() -> wheelClaw.spinInSlowly(), wheelClaw));
+    wheelClaw.setDefaultCommand(new RunCommand(() -> wheelClaw.spinStop(), wheelClaw));
   }
 
   /**
