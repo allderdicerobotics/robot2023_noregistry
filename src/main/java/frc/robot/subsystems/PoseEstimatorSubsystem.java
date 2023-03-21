@@ -170,12 +170,13 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         // desired location (field-relative) x: 14.5, 1.45, 0.462
         // desired rotation (quaternion, field-relative) W:0,X:0,Q:0,Z:1
         Translation2d currentLoc = new Translation2d(getCurrentPose().getX(),getCurrentPose().getY());
-        
+        Translation2d zeroTranslation = new Translation2d(0,0);
+        Rotation2d zeroRotation = new Rotation2d(0);
         Translation2d newLoc = new Translation2d(14.5,1.45).minus(currentLoc);
         Rotation2d newRot = new Rotation2d(0).minus(getCurrentPose().getRotation());
         PathPlannerTrajectory scoreTraj = PathPlanner.generatePath(
             new PathConstraints(4, 3),
-            new PathPoint(0, 0),
+            new PathPoint(zeroTranslation,zeroRotation),
             new PathPoint(newLoc, newRot)
         );
         SmartDashboard.putNumber("desiredX",newLoc.getX());
