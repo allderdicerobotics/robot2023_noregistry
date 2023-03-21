@@ -9,6 +9,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
@@ -199,5 +200,9 @@ public class DriveSubsystem extends SubsystemBase {
     double[] output = {speedFwd, speedStrafe, speedRot};
     return output;
   }
-
+  // public void alignToScore(double desiredX, double desiredY){
+  //     PathPlanner.generatePath(
+  //       new PathConstraints()
+  //     )
+  // }
 }

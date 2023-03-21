@@ -49,7 +49,7 @@ public class RobotContainer {
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
 
 
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("FullAuto", new PathConstraints(0.1, 0.1));
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("FullAuto", new PathConstraints(4, 3));
   // This is just an example event map. It would be better to have a constant, global event map
   // in your code that will be used by all path following commands.
 

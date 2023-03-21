@@ -121,8 +121,8 @@ public final class Constants {
         public static final class SnakeEyesCamera {
 
             public static final Transform3d CAMERA_TO_ROBOT = new Transform3d(
-                new Translation3d(),
-                new Rotation3d()
+                new Translation3d(0.1905,0.2286,0),
+                new Rotation3d(0.384,0,0)
             );
 
         }
