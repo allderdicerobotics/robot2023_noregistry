@@ -56,7 +56,9 @@ public class DriveSubsystem extends SubsystemBase {
 	}
 
 	// @Override
-	// public void periodic() {
+	public void periodic() {
+		SmartDashboard.putNumber("current", swerveModules[0].driveMotor.getOutputCurrent());
+	}
 	// // Update the odometry in the periodic block
 	// m_odometry.update(
 	// NavX.getAngle(),
@@ -215,10 +217,10 @@ public class DriveSubsystem extends SubsystemBase {
 		return output;
 	}
 
-	public void alignToScore(double desiredX, double desiredY){
-		
-	  PathPlanner.generatePath(
-		new PathConstraints()
-	  )
-  }
+// 	public void alignToScore(double desiredX, double desiredY){
+
+// 	  PathPlanner.generatePath(
+// 		new PathConstraints()
+// 	  )
+//   }
 }

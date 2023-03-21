@@ -106,7 +106,7 @@ public final class Constants {
                 2 * rot * Math.PI * WHEEL_RADIUS/WHEEL_GEAR_RATIO
             );
 
-            public static final double AXIS_SPEED_MAX = 5.0;
+            public static final double AXIS_SPEED_MAX = 4.5;//5.0;
             public static final double AXIS_ACC_MAX = 0.075;
             public static final double AXIS_DEC_MAX = 0.5;
 
@@ -143,8 +143,8 @@ public final class Constants {
     
     public static final class Arm {
 
-        public static final double ARM_VEL_MAX = 1000;
-        public static final double ARM_ACC_MAX = 1500;
+        public static final double ARM_VEL_MAX = 5000;
+        public static final double ARM_ACC_MAX = 3000;
         public static final double ARM_DOWN_IN = 0;
         public static final double ARM_FLOOR_CUBE = 70;
         public static final double ARM_FLOOR_CONE = 55;
