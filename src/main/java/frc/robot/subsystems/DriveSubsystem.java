@@ -4,6 +4,7 @@ package frc.robot.subsystems;
 // import org.w3c.dom.xpath.XPathNamespace;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -215,10 +216,5 @@ public class DriveSubsystem extends SubsystemBase {
 		return output;
 	}
 
-	public void alignToScore(double desiredX, double desiredY){
-		
-	  PathPlanner.generatePath(
-		new PathConstraints()
-	  )
-  }
+    
 }

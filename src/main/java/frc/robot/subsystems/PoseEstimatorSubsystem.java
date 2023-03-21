@@ -8,6 +8,11 @@ import java.util.Optional;
 import org.photonvision.*;
 import org.photonvision.targeting.*;
 
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.apriltag.AprilTagFields;
@@ -16,7 +21,9 @@ import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -158,5 +165,19 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     public void resetFieldPosition() {
         setCurrentPose(new Pose2d());
     }
-
+    public PathPlannerTrajectory getScorePath(){
+        // eventually pass in field-relative coords of the score stations
+        // desired location (field-relative) x: 14.5, 1.45, 0.462
+        // desired rotation (quaternion, field-relative) W:0,X:0,Q:0,Z:1
+        Translation2d currentLoc = new Translation2d(getCurrentPose().getX(),getCurrentPose().getY());
+        
+        Translation2d newLoc = new Translation2d(14.5,1.45).minus(currentLoc);
+        Rotation2d newRot = new Rotation2d(0).minus(getCurrentPose().getRotation());
+        PathPlannerTrajectory scoreTraj = PathPlanner.generatePath(
+            new PathConstraints(4, 3),
+            new PathPoint(newLoc.div(2), newRot.div(2)),
+            new PathPoint(newLoc, newRot)
+        );
+        return scoreTraj;
+    }
 }
