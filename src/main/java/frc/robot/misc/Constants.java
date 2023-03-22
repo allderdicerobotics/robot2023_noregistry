@@ -111,8 +111,8 @@ public final class Constants {
             public static final double AXIS_DEC_MAX = 0.5;
 
             public static final double ANG_VEL_MAX = Math.PI;
-            public static final double ANG_ACC_MAX = 0.15;
-            public static final double ANG_DEC_MAX = 0.4;
+            public static final double ANG_ACC_MAX = 0.1;
+            public static final double ANG_DEC_MAX = 0.25;
 
             public static final boolean GYRO_REVERSED = false;
 

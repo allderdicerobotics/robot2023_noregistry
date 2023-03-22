@@ -28,12 +28,10 @@ public class DriveSubsystem extends SubsystemBase {
 	// Robot swerve modules
 	private final SwerveModule[] swerveModules = Constants.Port.SWERVE_MODULES;
 
-	private final DrivetrainLimiter xLimiter = new DrivetrainLimiter(Constants.Prop.Drivetrain.AXIS_ACC_MAX,
-			Constants.Prop.Drivetrain.AXIS_DEC_MAX);
-	private final DrivetrainLimiter yLimiter = new DrivetrainLimiter(Constants.Prop.Drivetrain.AXIS_ACC_MAX,
-			Constants.Prop.Drivetrain.AXIS_DEC_MAX);
-	private final DrivetrainLimiter rotLimiter = new DrivetrainLimiter(Constants.Prop.Drivetrain.ANG_ACC_MAX,
-			Constants.Prop.Drivetrain.ANG_DEC_MAX);
+	private final DrivetrainLimiter xLimiter = new DrivetrainLimiter(Constants.Prop.Drivetrain.AXIS_ACC_MAX, Constants.Prop.Drivetrain.AXIS_DEC_MAX);
+	//drivetrainlimiter takes Constants.Prop.Drivetrain.AXIS_DEC_MAX too
+	private final DrivetrainLimiter yLimiter = new DrivetrainLimiter(Constants.Prop.Drivetrain.AXIS_ACC_MAX, Constants.Prop.Drivetrain.AXIS_DEC_MAX);
+	private final DrivetrainLimiter rotLimiter = new DrivetrainLimiter(Constants.Prop.Drivetrain.ANG_ACC_MAX, Constants.Prop.Drivetrain.ANG_DEC_MAX);
 
 	public final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
 			Constants.Prop.Drivetrain.MODULE_LOCATIONS[0],
@@ -120,7 +118,7 @@ public class DriveSubsystem extends SubsystemBase {
 								filteredInputs[1] * Constants.Prop.Drivetrain.AXIS_SPEED_MAX,
 								filteredInputs[2] * Constants.Prop.Drivetrain.ANG_VEL_MAX, NavX.getAngle())// rot,
 																											// m_gyro.getRotation2d())
-						: computeChassisSpeeds(xSpeed, ySpeed, rot));
+						: computeChassisSpeeds(filteredInputs[0], filteredInputs[1], filteredInputs[2]));
 		SwerveDriveKinematics.desaturateWheelSpeeds(
 				swerveModuleStates, Constants.Prop.Drivetrain.AXIS_SPEED_MAX);
 		// System.out.println("drive :)");
