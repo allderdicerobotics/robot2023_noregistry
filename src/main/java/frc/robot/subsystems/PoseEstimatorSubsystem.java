@@ -172,8 +172,8 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         Translation2d currentLoc = new Translation2d(getCurrentPose().getX(),getCurrentPose().getY());
         Translation2d zeroTranslation = new Translation2d(0,0);
         Rotation2d zeroRotation = new Rotation2d(0);
-        Translation2d newLoc = new Translation2d(14.5,1.45).minus(currentLoc);
-        Rotation2d newRot = new Rotation2d(0).minus(getCurrentPose().getRotation());
+        Translation2d newLoc = new Translation2d(14.5,1.45);//.minus(currentLoc);
+        Rotation2d newRot = new Rotation2d(0);//.minus(getCurrentPose().getRotation());
         PathPlannerTrajectory scoreTraj = PathPlanner.generatePath(
             new PathConstraints(4, 3),
             new PathPoint(zeroTranslation,zeroRotation),
