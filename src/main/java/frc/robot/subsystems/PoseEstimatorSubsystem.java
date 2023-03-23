@@ -169,7 +169,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     public void resetFieldPosition() {
         setCurrentPose(new Pose2d());
     }
-    
+
     // public Trajectory getScorePath(){
     //     // eventually pass in field-relative coords of the score stations
     //     // desired location (field-relative) x: 14.5, 1.45, 0.462
