@@ -16,8 +16,8 @@ import frc.robot.misc.*;
 public class WheelClaw extends SubsystemBase {
     private final CANSparkMax motor = new CANSparkMax(Constants.Port.TowerArmClaw.CAN_ID_CLAW, MotorType.kBrushless);
 
-    private final RelativeEncoder encoder = motor.getEncoder();
-    private final SparkMaxPIDController pid = motor.getPIDController();
+    //private final RelativeEncoder encoder = motor.getEncoder();
+    //private final SparkMaxPIDController pid = motor.getPIDController();
 
     public WheelClaw() {
         initMotor();
@@ -27,7 +27,7 @@ public class WheelClaw extends SubsystemBase {
         // reset motor
         motor.restoreFactoryDefaults();
         // PID coefs
-        double kP = 0.0005; 
+        /*double kP = 0.0005; 
         double kI = 0;
         double kD = 0.005; 
         double kIz = 0; 
@@ -42,17 +42,16 @@ public class WheelClaw extends SubsystemBase {
         pid.setIZone(kIz);
         pid.setFF(kFF);
         pid.setOutputRange(kMinOutput, kMaxOutput);
+        */
     }
 
     public void spinIn() {
-        // TODO FIXME change to actual value
         // System.out.println("spinIn");
-        setVelocity(1);
+        setVelocity(5);
     }
 
     public void spinOut() {
-        // TODO FIXME change to actual value
-        setVelocity(-0.75);
+        setVelocity(-1);
     }
 
     public void spinStop() {
@@ -66,7 +65,8 @@ public class WheelClaw extends SubsystemBase {
     }
 
     void setVelocity(double setpoint) {
-        pid.setReference(setpoint, ControlType.kVelocity);
+        motor.set(setpoint);
     }
+
 
 }

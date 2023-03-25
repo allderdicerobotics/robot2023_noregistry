@@ -18,9 +18,12 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.misc.Constants;
 import frc.robot.misc.DrivetrainLimiter;
 import frc.robot.misc.NavX;
+import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 
@@ -105,6 +108,13 @@ public class DriveSubsystem extends SubsystemBase {
 	 *                      field.
 	 */
 	public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+		PS4Controller m_driverController = new PS4Controller(Constants.Port.Driver.CONTROLLER);
+		Trigger leftTrigger = new JoystickButton(m_driverController, 7);
+		if (leftTrigger.getAsBoolean()){
+			xSpeed/=3;
+			ySpeed/=3;
+			rot/=3;
+		}
 		SmartDashboard.putNumber("xspeed", xSpeed);
 		SmartDashboard.putNumber("yspeed", ySpeed);
 		SmartDashboard.putNumber("rot", rot);
@@ -127,7 +137,33 @@ public class DriveSubsystem extends SubsystemBase {
 		swerveModules[2].setDesiredState(swerveModuleStates[2]);
 		swerveModules[3].setDesiredState(swerveModuleStates[3]);
 	}
+	// public void driveSlow(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
+	// 	xSpeed/=2;
+	// 	ySpeed/=2;
+	// 	rot/=2;
 
+	// 	SmartDashboard.putNumber("xspeed", xSpeed);
+	// 	SmartDashboard.putNumber("yspeed", ySpeed);
+	// 	SmartDashboard.putNumber("rot", rot);
+
+	// 	SmartDashboard.putNumber("robot angle", NavX.getAngle().getDegrees());
+	// 	double[] filteredInputs = joystickFiltering(xSpeed, ySpeed, rot);
+	// 	var swerveModuleStates = kinematics.toSwerveModuleStates(
+	// 			fieldRelative
+	// 					? ChassisSpeeds.fromFieldRelativeSpeeds(
+	// 							filteredInputs[0] * Constants.Prop.Drivetrain.AXIS_SPEED_MAX,
+	// 							filteredInputs[1] * Constants.Prop.Drivetrain.AXIS_SPEED_MAX,
+	// 							filteredInputs[2] * Constants.Prop.Drivetrain.ANG_VEL_MAX, NavX.getAngle())// rot,
+	// 																										// m_gyro.getRotation2d())
+	// 					: computeChassisSpeeds(filteredInputs[0], filteredInputs[1], filteredInputs[2]));
+	// 	SwerveDriveKinematics.desaturateWheelSpeeds(
+	// 			swerveModuleStates, Constants.Prop.Drivetrain.AXIS_SPEED_MAX);
+	// 	// System.out.println("drive :)");
+	// 	swerveModules[0].setDesiredState(swerveModuleStates[0]);
+	// 	swerveModules[1].setDesiredState(swerveModuleStates[1]);
+	// 	swerveModules[2].setDesiredState(swerveModuleStates[2]);
+	// 	swerveModules[3].setDesiredState(swerveModuleStates[3]);
+	// }
 	/**
 	 * Sets the swerve ModuleStates.
 	 *

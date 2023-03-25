@@ -45,6 +45,9 @@ public class Arm extends SubsystemBase {
     private Supplier<Double> rotationOffsetSupplier;
 
     public Arm() {
+
+        armMotor.setSmartCurrentLimit(40);
+        
         /*
             |------|                     |------|
             |      |-------       -------|      |
@@ -115,7 +118,7 @@ public class Arm extends SubsystemBase {
     }
 
     public double limitAccWhenArmUp() {
-        if (encoder.getPosition() > 50) {
+        if (encoder.getPosition() > 30) {
             double maxAcc = 0.0075;
             return maxAcc; 
         }

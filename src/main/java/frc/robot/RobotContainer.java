@@ -85,6 +85,7 @@ public class RobotContainer {
   Trigger scoreButton = new JoystickButton(m_driverController, 14);
   Trigger leftBumper = new JoystickButton(m_driverController, 5);
   Trigger rightBumper = new JoystickButton(m_driverController, 6);
+  // Trigger leftTrigger = new JoystickButton(m_buttonBoard, 7);
   
   Trigger cubePickupButton = new JoystickButton(m_buttonBoard,10);
   Trigger conePickupButton = new JoystickButton(m_buttonBoard, 6);
@@ -139,6 +140,15 @@ public class RobotContainer {
     leftBumper.onTrue(new InstantCommand(() -> tower.moveForward()));
     rightBumper.onTrue(new InstantCommand(() -> tower.moveReverse()));
 
+    // leftTrigger.onTrue(new RunCommand(
+    //   () ->
+    //       drive.driveSlow(
+    //           -m_driverController.getLeftY(),
+    //           -m_driverController.getLeftX(),
+    //           -m_driverController.getRightX(),
+    //           true),
+    //   drive));
+
 
     // button board
     stowInButton.onTrue(armSetpoints.stowInside());
@@ -153,18 +163,19 @@ public class RobotContainer {
     cubeThirdButton.onTrue(armSetpoints.cubeThirdLevel());
     coneThirdButton.onTrue(armSetpoints.coneThirdLevel());
 
-    /*scoreButton.onTrue(new PPSwerveControllerCommand(
-      poseEstimator.getScorePath(),
-      poseEstimator::getCurrentPose,
-      drive.kinematics,
-      new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD),
-      new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD),
-      new PIDController(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD),
-      drive::setModuleStates,
-      false,
-      drive
-    ));
-    */
+
+    // scoreButton.onTrue(new PPSwerveControllerCommand(
+    //   poseEstimator.getScorePath(),
+    //   poseEstimator::getCurrentPose,
+    //   drive.kinematics,
+    //   new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD),
+    //   new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD),
+    //   new PIDController(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD),
+    //   drive::setModuleStates,
+    //   false,
+    //   drive
+    // ));
+    
   }
 
   /**

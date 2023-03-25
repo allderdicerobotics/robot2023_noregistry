@@ -47,7 +47,7 @@ public class ArmSetpoints {
     public Command cubeSecondLevel() {
       return Commands.sequence(
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_FLOOR_CONE)),
-        new InstantCommand(tower::moveForward),
+        new InstantCommand(tower::moveReverse),
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_CUBE_2))
       );
     }

@@ -169,7 +169,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     public void resetFieldPosition() {
         setCurrentPose(new Pose2d());
     }
-    /*public PathPlannerTrajectory getScorePath(){
+    public PathPlannerTrajectory getScorePath(){
         // eventually pass in field-relative coords of the score stations
         // desired location (field-relative) x: 14.5, 1.45, 0.462
         // desired rotation (quaternion, field-relative) W:0,X:0,Q:0,Z:1
@@ -177,14 +177,14 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         Translation2d newLoc = new Translation2d(14.5,1.45);//.minus(currentLoc);
         Rotation2d newRot = new Rotation2d(0);//.minus(getCurrentPose().getRotation());
         PathPlannerTrajectory scoreTraj = PathPlanner.generatePath(
-            new PathConstraints(4, 3),
-            new PathPoint(currentLoc,getCurrentPose().getRotation()),
+            new PathConstraints(2, 1),
+            new PathPoint(currentLoc,newRot),
             new PathPoint(newLoc, newRot)
         );
         SmartDashboard.putNumber("desiredX",newLoc.getX());
         SmartDashboard.putNumber("desiredY",newLoc.getY());
         
-    //     // return scoreTraj;
-    // }
-    */
+        return scoreTraj;
+        }
+    
     }
