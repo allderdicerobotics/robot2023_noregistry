@@ -161,7 +161,7 @@ public class RobotContainer {
       new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD),
       new PIDController(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD),
       drive::setModuleStates,
-      true,
+      false,
       drive
     ));
   }
