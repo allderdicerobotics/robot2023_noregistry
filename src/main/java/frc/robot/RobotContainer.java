@@ -133,8 +133,8 @@ public class RobotContainer {
     aButton.whileTrue(new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
     xButton.whileTrue(new RunCommand(() -> wheelClaw.spinOut(), wheelClaw));
 
-    bButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(10)));
-    yButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-10)));
+    bButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(5)));
+    yButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-5)));
 
     leftBumper.onTrue(new InstantCommand(() -> tower.moveForward()));
     rightBumper.onTrue(new InstantCommand(() -> tower.moveReverse()));
@@ -153,7 +153,7 @@ public class RobotContainer {
     cubeThirdButton.onTrue(armSetpoints.cubeThirdLevel());
     coneThirdButton.onTrue(armSetpoints.coneThirdLevel());
 
-    scoreButton.onTrue(new PPSwerveControllerCommand(
+    /*scoreButton.onTrue(new PPSwerveControllerCommand(
       poseEstimator.getScorePath(),
       poseEstimator::getCurrentPose,
       drive.kinematics,
@@ -164,6 +164,7 @@ public class RobotContainer {
       false,
       drive
     ));
+    */
   }
 
   /**
