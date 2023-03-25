@@ -5,6 +5,8 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
@@ -20,6 +22,7 @@ import frc.robot.subsystems.WheelClaw;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -73,6 +76,10 @@ public class RobotContainer {
     drive
   );
 
+  PIDController xController = new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD);
+  PIDController yController = new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD);
+  PIDController thetaController = new PIDController(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD);
+
   Command fullAuto = autoBuilder.fullAuto(examplePath);
 
   // The driver's controller
@@ -85,7 +92,6 @@ public class RobotContainer {
   Trigger scoreButton = new JoystickButton(m_driverController, 14);
   Trigger leftBumper = new JoystickButton(m_driverController, 5);
   Trigger rightBumper = new JoystickButton(m_driverController, 6);
-  // Trigger leftTrigger = new JoystickButton(m_buttonBoard, 7);
   
   Trigger cubePickupButton = new JoystickButton(m_buttonBoard,10);
   Trigger conePickupButton = new JoystickButton(m_buttonBoard, 6);
@@ -134,11 +140,13 @@ public class RobotContainer {
     aButton.whileTrue(new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
     xButton.whileTrue(new RunCommand(() -> wheelClaw.spinOut(), wheelClaw));
 
-    bButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(3)));
-    yButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-3)));
+    bButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(20)));
+    yButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-20)));
 
     leftBumper.onTrue(new InstantCommand(() -> tower.moveForward()));
     rightBumper.onTrue(new InstantCommand(() -> tower.moveReverse()));
+
+    \
 
     // leftTrigger.onTrue(new RunCommand(
     //   () ->
@@ -175,6 +183,13 @@ public class RobotContainer {
     //   false,
     //   drive
     // ));
+
+    // TODO: MAY NOT WORK
+    /*scoreButton.onTrue(new SwerveControllerCommand(poseEstimator.getScorePath(),
+      poseEstimator.getCurrentPose(),
+      drive.kinematics,
+      xController, yController , thetaController));
+    */
     
   }
 
