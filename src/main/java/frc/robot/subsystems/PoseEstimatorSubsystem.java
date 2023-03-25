@@ -169,7 +169,7 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
     public void resetFieldPosition() {
         setCurrentPose(new Pose2d());
     }
-    public PathPlannerTrajectory getScorePath(){
+    /*public PathPlannerTrajectory getScorePath(){
         // eventually pass in field-relative coords of the score stations
         // desired location (field-relative) x: 14.5, 1.45, 0.462
         // desired rotation (quaternion, field-relative) W:0,X:0,Q:0,Z:1
@@ -186,4 +186,5 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         
     //     // return scoreTraj;
     // }
-}
+    */
+    }
