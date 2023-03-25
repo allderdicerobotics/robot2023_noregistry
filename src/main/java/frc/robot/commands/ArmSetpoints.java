@@ -22,6 +22,7 @@ public class ArmSetpoints {
 
     public Command stowInside() {
       return Commands.sequence(
+        new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_FLOOR_CONE)),
         this.tower.raiseAndWait(),
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_DOWN_IN))
       );
@@ -45,6 +46,7 @@ public class ArmSetpoints {
 
     public Command cubeSecondLevel() {
       return Commands.sequence(
+        new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_FLOOR_CONE)),
         new InstantCommand(tower::moveForward),
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_CUBE_2))
       );
@@ -52,6 +54,7 @@ public class ArmSetpoints {
 
     public Command coneSecondLevel() {
       return Commands.sequence(
+        new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_FLOOR_CONE)),
         new InstantCommand(tower::moveForward),
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_CONE_2))
       );
@@ -59,6 +62,7 @@ public class ArmSetpoints {
 
     public Command cubeThirdLevel() {
       return Commands.sequence(
+        new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_FLOOR_CONE)),
         new InstantCommand(tower::moveForward),
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_CUBE_3))
       );
@@ -66,6 +70,7 @@ public class ArmSetpoints {
     
     public Command coneThirdLevel() {
       return Commands.sequence(
+        new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_FLOOR_CONE)),
         new InstantCommand(tower::moveForward),
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_CONE_3))
       );
@@ -73,6 +78,7 @@ public class ArmSetpoints {
 
     public Command playerStation() {
       return Commands.sequence(
+        new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_FLOOR_CONE)),
         new InstantCommand(tower::moveForward),
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_STATION))
       );
