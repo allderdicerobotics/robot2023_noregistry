@@ -146,11 +146,11 @@ public final class Constants {
         public static final double ARM_VEL_MAX = 5000;
         public static final double ARM_ACC_MAX = 3000;
         public static final double ARM_DOWN_IN = 0;
-        public static final double ARM_FLOOR_CUBE = 70;
-        public static final double ARM_FLOOR_CONE = 55;
+        public static final double ARM_FLOOR_CUBE = 70; //70
+        public static final double ARM_FLOOR_CONE = 20; //55
         public static final double ARM_CUBE_2 = 70;
         public static final double ARM_CONE_2 = 140;
-        public static final double ARM_CUBE_3 = 150;
+        public static final double ARM_CUBE_3 = 35; //150
         public static final double ARM_CONE_3 = 165;
         public static final double ARM_STATION = 0;
         

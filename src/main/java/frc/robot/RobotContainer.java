@@ -133,8 +133,8 @@ public class RobotContainer {
     aButton.whileTrue(new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
     xButton.whileTrue(new RunCommand(() -> wheelClaw.spinOut(), wheelClaw));
 
-    bButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(5)));
-    yButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-5)));
+    bButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(3)));
+    yButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-3)));
 
     leftBumper.onTrue(new InstantCommand(() -> tower.moveForward()));
     rightBumper.onTrue(new InstantCommand(() -> tower.moveReverse()));
