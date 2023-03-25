@@ -75,9 +75,9 @@ public class Arm extends SubsystemBase {
         pid.setIZone(0);
         pid.setFF(0.0002);
         pid.setOutputRange(-1, 1);
-        pid.setSmartMotionMaxVelocity(5000, smartMotionSlot);
+        pid.setSmartMotionMaxVelocity(Constants.Prop.Arm.ARM_VEL_MAX, smartMotionSlot);
         pid.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
-        pid.setSmartMotionMaxAccel(2000, smartMotionSlot);
+        pid.setSmartMotionMaxAccel(Constants.Prop.Arm.ARM_ACC_MAX, smartMotionSlot);
         pid.setSmartMotionAllowedClosedLoopError(0, smartMotionSlot);
         
     }

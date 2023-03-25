@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import frc.robot.misc.Constants;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Optional;
 
 import org.photonvision.*;
@@ -25,6 +26,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -180,6 +184,6 @@ public class PoseEstimatorSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("desiredX",newLoc.getX());
         SmartDashboard.putNumber("desiredY",newLoc.getY());
         
-        return scoreTraj;
-    }
+    //     // return scoreTraj;
+    // }
 }
