@@ -83,7 +83,7 @@ public final class Constants {
         public static final class Drivetrain {
 
             public static final Translation2d[] MODULE_LOCATIONS = {
-                new Translation2d(0.2159, 0.2159),
+                new Translation2d(0.2159, 0.2159), //.2159
                 new Translation2d(0.2159, -0.2159),
                 new Translation2d(-0.2159, 0.2159),
                 new Translation2d(-0.2159, -0.2159)
@@ -150,7 +150,7 @@ public final class Constants {
         public static final double ARM_FLOOR_CONE = 25; //55
         public static final double ARM_CUBE_2 = 30; //70
         public static final double ARM_CONE_2 = 60; //140
-        public static final double ARM_CUBE_3 = 65; //150
+        public static final double ARM_CUBE_3 = 60; //150
         public static final double ARM_CONE_3 = 70; //165
         public static final double ARM_STATION = 0; //35
         

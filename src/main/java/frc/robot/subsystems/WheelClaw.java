@@ -51,7 +51,7 @@ public class WheelClaw extends SubsystemBase {
     }
 
     public void spinOut() {
-        setVelocity(-1);
+        setVelocity(-.5);
     }
 
     public void spinStop() {
