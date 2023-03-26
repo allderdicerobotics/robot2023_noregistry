@@ -66,6 +66,9 @@ public class DriveSubsystem extends SubsystemBase {
 	public DriveSubsystem() {
 	}
 
+	public void stop() {
+		drive(0,0,0,true);
+	}
 	// @Override
 	public void periodic() {
 		SmartDashboard.putNumber("current", swerveModules[0].driveMotor.getOutputCurrent());

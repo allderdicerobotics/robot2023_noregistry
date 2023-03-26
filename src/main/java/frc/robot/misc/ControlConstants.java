@@ -21,7 +21,7 @@ public final class ControlConstants {
 
     public static final class Arm {
 
-        public static final double ARM_KP = 0.00000000000005;
+        public static final double ARM_KP = 0.0000000000002; //0.00000000000005
         public static final double ARM_KI = 0.0;
         public static final double ARM_KD = 0.0;
 

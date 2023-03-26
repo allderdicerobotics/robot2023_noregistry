@@ -83,10 +83,10 @@ public final class Constants {
         public static final class Drivetrain {
 
             public static final Translation2d[] MODULE_LOCATIONS = {
-                new Translation2d(0.381, 0.381),
-                new Translation2d(0.381, -0.381),
-                new Translation2d(-0.381, 0.381),
-                new Translation2d(-0.381, -0.381)
+                new Translation2d(0.2159, 0.2159),
+                new Translation2d(0.2159, -0.2159),
+                new Translation2d(-0.2159, 0.2159),
+                new Translation2d(-0.2159, -0.2159)
             };
 
             
@@ -121,7 +121,7 @@ public final class Constants {
         public static final class SnakeEyesCamera {
 
             public static final Transform3d CAMERA_TO_ROBOT = new Transform3d(
-                new Translation3d(0.1905,0.2286,0),
+                new Translation3d(0.1905,0.2159,0),
                 new Rotation3d(0.384,0,0)
             );
 
@@ -144,7 +144,7 @@ public final class Constants {
     public static final class Arm {
 
         public static final double ARM_VEL_MAX = 7000;
-        public static final double ARM_ACC_MAX = 3500;
+        public static final double ARM_ACC_MAX = 4500;
         public static final double ARM_DOWN_IN = 0;
         public static final double ARM_FLOOR_CUBE = 30; //70
         public static final double ARM_FLOOR_CONE = 25; //55

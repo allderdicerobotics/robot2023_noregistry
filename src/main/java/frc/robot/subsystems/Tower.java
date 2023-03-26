@@ -14,7 +14,7 @@ import frc.robot.misc.*;
 public class Tower extends SubsystemBase {
     // PneumaticsControlModule pcm = new PneumaticsControlModule();
     
-    private final Solenoid m_solenoid = new Solenoid(PneumaticsModuleType.CTREPCM, 7);
+    private final Solenoid m_solenoid = new Solenoid(PneumaticsModuleType.REVPH, 7);
 
     public void moveForward() {
         m_solenoid.set(true);
