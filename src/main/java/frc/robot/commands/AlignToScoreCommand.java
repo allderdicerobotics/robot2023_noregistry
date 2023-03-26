@@ -15,7 +15,6 @@ package frc.robot.commands;
 
 import frc.robot.misc.Constants;
 import frc.robot.misc.ControlConstants;
-import frc.robot.misc.Constants.Prop.Drivetrain;
 
 import java.util.ResourceBundle.Control;
 import java.util.function.Supplier;
@@ -24,7 +23,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -48,16 +46,16 @@ public class AlignToScoreCommand extends CommandBase {
       Constants.Prop.Drivetrain.ANG_VEL_MAX * 0.4,
       Constants.Prop.Drivetrain.ANG_VEL_MAX);
 
-  private final ProfiledPIDController xController;
-  private final ProfiledPIDController yController;
-  private final ProfiledPIDController thetaController;
+  private final ProfiledPIDController xController = new ProfiledPIDController(ControlConstants.Driving.DRIVE_KP,ControlConstants.Driving.DRIVE_KI,ControlConstants.Driving.DRIVE_KD,DEFAULT_XY_CONSTRAINTS);
+  private final ProfiledPIDController yController = new ProfiledPIDController(ControlConstants.Driving.DRIVE_KP,ControlConstants.Driving.DRIVE_KI,ControlConstants.Driving.DRIVE_KD,DEFAULT_XY_CONSTRAINTS);
+  private final ProfiledPIDController thetaController = new ProfiledPIDController(ControlConstants.Driving.TURNING_KP,ControlConstants.Driving.TURNING_KI,ControlConstants.Driving.TURNING_KD,DEFAULT_OMEGA_CONSTRAINTS);
 
-  private final DriveSubsystem drive;
-  private final Supplier<Pose2d> poseProvider;
-  private final Pose2d goalPose;
-  private final boolean useAllianceColor;
+  private DriveSubsystem drive;
+  private Supplier<Pose2d> poseProvider;
+  private Pose2d goalPose;
+  private boolean useAllianceColor;
 
-  public AligntoScoreCommand(
+  public AlignToScoreCommand(
         DriveSubsystem drive,
         Supplier<Pose2d> poseProvider,
         Pose2d goalPose,
@@ -65,7 +63,7 @@ public class AlignToScoreCommand extends CommandBase {
     this(drive, poseProvider, goalPose, DEFAULT_XY_CONSTRAINTS, DEFAULT_OMEGA_CONSTRAINTS, useAllianceColor);
   }
 
-  public AligntoScoreCommand(
+  public AlignToScoreCommand(
         DriveSubsystem drive,
         Supplier<Pose2d> poseProvider,
         Pose2d goalPose,
@@ -79,7 +77,7 @@ public class AlignToScoreCommand extends CommandBase {
 
     xController.setTolerance(TRANSLATION_TOLERANCE);
     yController.setTolerance(TRANSLATION_TOLERANCE);
-    thetaController = new ProfiledPIDController(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD, omegaConstraints);
+
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     thetaController.setTolerance(THETA_TOLERANCE);
 
