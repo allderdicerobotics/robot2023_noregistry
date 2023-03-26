@@ -107,6 +107,7 @@ public class Arm extends SubsystemBase {
         
         if (!hallEffect.get()) {
             encoder.setPosition(0);
+            armMotor.stopMotor();
             if (angle < encoder.getPosition()) {
                 return;
             }
