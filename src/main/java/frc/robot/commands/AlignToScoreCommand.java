@@ -50,10 +50,10 @@ public class AlignToScoreCommand extends CommandBase {
   private final ProfiledPIDController yController = new ProfiledPIDController(ControlConstants.Driving.DRIVE_KP,ControlConstants.Driving.DRIVE_KI,ControlConstants.Driving.DRIVE_KD,DEFAULT_XY_CONSTRAINTS);
   private final ProfiledPIDController thetaController = new ProfiledPIDController(ControlConstants.Driving.TURNING_KP,ControlConstants.Driving.TURNING_KI,ControlConstants.Driving.TURNING_KD,DEFAULT_OMEGA_CONSTRAINTS);
 
-  private DriveSubsystem drive;
-  private Supplier<Pose2d> poseProvider;
-  private Pose2d goalPose;
-  private boolean useAllianceColor;
+  private final DriveSubsystem drive;
+  private final Supplier<Pose2d> poseProvider;
+  private final Pose2d goalPose;
+  private final boolean useAllianceColor;
 
   public AlignToScoreCommand(
         DriveSubsystem drive,
