@@ -5,11 +5,13 @@
 package frc.robot;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
+import frc.robot.commands.AlignToScoreCommand;
 import frc.robot.commands.ArmSetpoints;
 import frc.robot.misc.Constants;
 import frc.robot.misc.ControlConstants;
@@ -25,6 +27,8 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 import java.util.List;
 
@@ -81,7 +85,8 @@ public class RobotContainer {
   PIDController thetaController = new PIDController(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD);
 
   Command fullAuto = autoBuilder.fullAuto(examplePath);
-
+  Rotation2d zeroRot = new Rotation2d();
+  Pose2d goalPose = new Pose2d(14.5, 1.45, zeroRot);
   // The driver's controller
   PS4Controller m_driverController = new PS4Controller(Constants.Port.Driver.CONTROLLER);
   Joystick m_buttonBoard = new Joystick(Constants.Port.Operator.BUTTONBOARD);
@@ -171,17 +176,11 @@ public class RobotContainer {
     coneThirdButton.onTrue(armSetpoints.coneThirdLevel());
 
 
-    // scoreButton.onTrue(new PPSwerveControllerCommand(
-    //   poseEstimator.getScorePath(),
-    //   poseEstimator::getCurrentPose,
-    //   drive.kinematics,
-    //   new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD),
-    //   new PIDController(ControlConstants.Driving.DRIVE_KP, ControlConstants.Driving.DRIVE_KI, ControlConstants.Driving.DRIVE_KD),
-    //   new PIDController(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD),
-    //   drive::setModuleStates,
-    //   false,
-    //   drive
-    // ));
+    scoreButton.onTrue(new AlignToScoreCommand(drive,
+      poseEstimator::getCurrentPose, 
+      goalPose,
+      false
+      ));
 
     // TODO: MAY NOT WORK
   //   scoreButton.onTrue(new SwerveControllerCommand(poseEstimator.getScorePath(),
