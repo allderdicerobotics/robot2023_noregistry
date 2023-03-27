@@ -31,7 +31,9 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.photonvision.PhotonCamera;
 
@@ -58,12 +60,15 @@ public class RobotContainer {
   private final PhotonCamera photonCamera = new PhotonCamera("IMX219");
   private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(photonCamera, drive);
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
+  private Map<String, Command> eventMap;
 
-
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("FullAuto", new PathConstraints(4, 3));
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("please work oh god please", new PathConstraints(4, 3));
   // This is just an example event map. It would be better to have a constant, global event map
   // in your code that will be used by all path following commands.
-
+  eventMap = new HashMap<>();
+  
+  eventMap.put("extend arm", armSetpoints.cubeSecondLevel());
+  eventMap.put("score cube lvl 2", new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
   //eventMap.put("marker1", new PrintCommand("Passed marker 1"));
   // eventMap.put("intakeDown", new IntakeDown());
 
@@ -76,7 +81,7 @@ public class RobotContainer {
     new PIDConstants(0.5, 0, 0),
     new PIDConstants(1.0, 0, 0),
     drive::setModuleStates,
-    null,
+    eventMap,
     true,
     drive
   );
