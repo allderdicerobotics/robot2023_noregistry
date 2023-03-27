@@ -8,7 +8,15 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
+import org.opencv.core.Mat;
+import org.opencv.core.Point;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
+
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.cscore.CvSink;
+import edu.wpi.first.cscore.CvSource;
 import edu.wpi.first.cscore.UsbCamera;
 import edu.wpi.first.cscore.VideoSink;
 import edu.wpi.first.cscore.VideoSource.ConnectionStrategy;
@@ -27,6 +35,7 @@ public class Robot extends TimedRobot {
   UsbCamera camera1;
   VideoSink server;
 
+  Thread m_visionThread;
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -36,10 +45,26 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    camera1 = CameraServer.startAutomaticCapture(1);
-    server = CameraServer.getServer();
 
-    camera1.setConnectionStrategy(ConnectionStrategy.kKeepOpen);
+    m_visionThread =
+      new Thread(
+        () -> {
+          UsbCamera camera1 = CameraServer.startAutomaticCapture();
+          camera1.setResolution(640, 480);
+          CvSink cvSink = CameraServer.getVideo();
+          CvSource outputStream = CameraServer.putVideo("rectangle", 640, 480);
+
+          Mat mat = new Mat();
+
+        while (!Thread.interrupted()) {
+          if (cvSink.grabFrame(mat) == 0) {
+            outputStream.notifyError(cvSink.getError());
+            continue;
+        }
+        Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400), new Scalar(255, 255, 255), 5);
+        outputStream.putFrame(mat);
+      }
+    });
   }
 
   /**
