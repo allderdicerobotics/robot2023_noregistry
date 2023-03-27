@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -95,6 +96,7 @@ public class RobotContainer {
   Trigger bButton = new JoystickButton(m_driverController, 3);
   Trigger yButton = new JoystickButton(m_driverController, 4);
   Trigger scoreButton = new JoystickButton(m_driverController, 14);
+  Trigger rightTrigger = new JoystickButton(m_driverController, 8);
   Trigger leftBumper = new JoystickButton(m_driverController, 5);
   Trigger rightBumper = new JoystickButton(m_driverController, 6);
   
@@ -175,12 +177,15 @@ public class RobotContainer {
     cubeThirdButton.onTrue(armSetpoints.cubeThirdLevel());
     coneThirdButton.onTrue(armSetpoints.coneThirdLevel());
 
-
-    scoreButton.onTrue(new AlignToScoreCommand(drive,
+    var alignCmd = new AlignToScoreCommand(drive,
       poseEstimator::getCurrentPose, 
       goalPose,
       false
-      ));
+      ).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
+    scoreButton.onTrue(alignCmd);
+    // rightTrigger.onTrue(new InstantCommand( () -> drive.stop()));
+    
+
 
     // TODO: MAY NOT WORK
   //   scoreButton.onTrue(new SwerveControllerCommand(poseEstimator.getScorePath(),

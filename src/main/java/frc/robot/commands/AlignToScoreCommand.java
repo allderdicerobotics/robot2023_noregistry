@@ -26,6 +26,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
 // import frc.robot.subsystems.LEDSubsystem;
@@ -35,21 +36,20 @@ import frc.robot.subsystems.DriveSubsystem;
  */
 public class AlignToScoreCommand extends CommandBase {
   
-  private static final double TRANSLATION_TOLERANCE = 0.02;
+  private static final double TRANSLATION_TOLERANCE = 0.002;
   private static final double THETA_TOLERANCE = Units.degreesToRadians(2.0);
 
   /** Default constraints are 90% of max speed, accelerate to full speed in 1/3 second */
   private static final TrapezoidProfile.Constraints DEFAULT_XY_CONSTRAINTS = new TrapezoidProfile.Constraints(
-      Constants.Prop.Drivetrain.AXIS_SPEED_MAX * 0.5,
-      Constants.Prop.Drivetrain.AXIS_SPEED_MAX);
+      Constants.Prop.Drivetrain.AXIS_SPEED_MAX/2,
+      Constants.Prop.Drivetrain.AXIS_ACC_MAX/2);
   private static final TrapezoidProfile.Constraints DEFAULT_OMEGA_CONSTRAINTS = new TrapezoidProfile.Constraints(
-      Constants.Prop.Drivetrain.ANG_VEL_MAX * 0.4,
-      Constants.Prop.Drivetrain.ANG_VEL_MAX);
+      Constants.Prop.Drivetrain.ANG_VEL_MAX/2,
+      Constants.Prop.Drivetrain.ANG_ACC_MAX/2);
 
-  private final ProfiledPIDController xController = new ProfiledPIDController(ControlConstants.Driving.DRIVE_KP,ControlConstants.Driving.DRIVE_KI,ControlConstants.Driving.DRIVE_KD,DEFAULT_XY_CONSTRAINTS);
-  private final ProfiledPIDController yController = new ProfiledPIDController(ControlConstants.Driving.DRIVE_KP,ControlConstants.Driving.DRIVE_KI,ControlConstants.Driving.DRIVE_KD,DEFAULT_XY_CONSTRAINTS);
-  private final ProfiledPIDController thetaController = new ProfiledPIDController(ControlConstants.Driving.TURNING_KP,ControlConstants.Driving.TURNING_KI,ControlConstants.Driving.TURNING_KD,DEFAULT_OMEGA_CONSTRAINTS);
-
+  private final ProfiledPIDController xController = new ProfiledPIDController(ControlConstants.Align.DRIVE_KP,ControlConstants.Align.DRIVE_KI,ControlConstants.Align.DRIVE_KD,DEFAULT_XY_CONSTRAINTS);
+  private final ProfiledPIDController yController = new ProfiledPIDController(ControlConstants.Align.DRIVE_KP,ControlConstants.Align.DRIVE_KI,ControlConstants.Align.DRIVE_KD,DEFAULT_XY_CONSTRAINTS);
+  private final ProfiledPIDController thetaController = new ProfiledPIDController(ControlConstants.Align.TURNING_KP,ControlConstants.Align.TURNING_KI,ControlConstants.Align.TURNING_KD,DEFAULT_OMEGA_CONSTRAINTS);
   private final DriveSubsystem drive;
   private final Supplier<Pose2d> poseProvider;
   private final Pose2d goalPose;
@@ -74,7 +74,7 @@ public class AlignToScoreCommand extends CommandBase {
     this.poseProvider = poseProvider;
     this.goalPose = goalPose;
     this.useAllianceColor = useAllianceColor;
-
+    
     xController.setTolerance(TRANSLATION_TOLERANCE);
     yController.setTolerance(TRANSLATION_TOLERANCE);
 
@@ -113,12 +113,12 @@ public class AlignToScoreCommand extends CommandBase {
   public void execute() {
     var robotPose = poseProvider.get();
     // Drive to the goal
-    var xSpeed = xController.calculate(robotPose.getX());
+    var xSpeed = xController.calculate(robotPose.getX(),goalPose.getX());
     if (xController.atGoal()) {
       xSpeed = 0;
     }
 
-    var ySpeed = yController.calculate(robotPose.getY());
+    var ySpeed = yController.calculate(robotPose.getY(),goalPose.getY());
     if (yController.atGoal()) {
       ySpeed = 0;
     }
@@ -127,7 +127,11 @@ public class AlignToScoreCommand extends CommandBase {
     if (thetaController.atGoal()) {
       omegaSpeed = 0;
     }
-
+    SmartDashboard.putNumber("x speed (aligncmd)", xSpeed);
+    
+    SmartDashboard.putNumber("y speed (aligncmd)", ySpeed);
+    
+    SmartDashboard.putNumber("rot speed (aligncmd)", omegaSpeed);
     drive.drive(
       xSpeed, ySpeed, omegaSpeed, true);
   }
@@ -136,7 +140,6 @@ public class AlignToScoreCommand extends CommandBase {
   public boolean isFinished() {
     return atGoal();
   }
-
   @Override
   public void end(boolean interrupted) {
     drive.stop();

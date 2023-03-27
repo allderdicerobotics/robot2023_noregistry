@@ -18,6 +18,17 @@ public final class ControlConstants {
         //public static final double DRIVE_MAX_VEL = 2500.0;
 
     }
+    public static final class Align {
+
+        public static final double TURNING_KP = 1.6; //1.7
+        public static final double TURNING_KI = 1.8; //2.0;
+        public static final double TURNING_KD = 0.0;
+
+        public static final double DRIVE_KP = 0.35;
+        public static final double DRIVE_KI = 0.0;
+        public static final double DRIVE_KD = 0.0;
+
+    }
 
     public static final class Arm {
 
