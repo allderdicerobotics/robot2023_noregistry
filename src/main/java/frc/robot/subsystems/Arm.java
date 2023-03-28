@@ -105,12 +105,12 @@ public class Arm extends SubsystemBase {
             ); 
             */
         
-        if (!hallEffect.get()) {
+        if (hallEffect.get()) {
             encoder.setPosition(0);
-            armMotor.stopMotor();
-            if (angle < encoder.getPosition()) {
-                return;
-            }
+            //armMotor.stopMotor();
+            //if (angle < encoder.getPosition()) {
+            //    return;
+        
         }
 
         SparkMaxPIDController pid = armMotor.getPIDController();
