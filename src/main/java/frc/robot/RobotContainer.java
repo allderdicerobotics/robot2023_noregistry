@@ -62,13 +62,13 @@ public class RobotContainer {
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
   private Map<String, Command> eventMap;
 
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("please work oh god please", new PathConstraints(4, 3));
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("FullAuto", new PathConstraints(4, 3));
   // This is just an example event map. It would be better to have a constant, global event map
   // in your code that will be used by all path following commands.
-  eventMap = new HashMap<>();
+  //eventMap = new HashMap<>();
   
-  eventMap.put("extend arm", armSetpoints.cubeSecondLevel());
-  eventMap.put("score cube lvl 2", new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
+  //eventMap.put("extend arm", armSetpoints.cubeSecondLevel());
+  //eventMap.put("score cube lvl 2", new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
   //eventMap.put("marker1", new PrintCommand("Passed marker 1"));
   // eventMap.put("intakeDown", new IntakeDown());
 
