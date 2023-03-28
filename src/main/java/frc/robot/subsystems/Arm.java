@@ -71,6 +71,7 @@ public class Arm extends SubsystemBase {
 
         SparkMaxPIDController pid = armMotor.getPIDController();
         encoder = armMotor.getEncoder();
+        encoder.se
         int smartMotionSlot = 0;
         pid.setP(0.0003);
         pid.setI(0.000001);
@@ -118,21 +119,21 @@ public class Arm extends SubsystemBase {
         this.desiredPosition = angle;
     }
 
-    public double limitAccWhenArmUp() {
-        if (encoder.getPosition() > 30) {
-            double maxAcc = 0.0075;
-            return maxAcc; 
-        }
-        return desiredPosition;
-    }
+    // public double limitAccWhenArmUp() {
+    //     if (encoder.getPosition() > 30) {
+    //         double maxAcc = 0.0075;
+    //         return maxAcc; 
+    //     }
+    //     return desiredPosition;
+    // }
 
     public void changeDesiredState(double change) {
         setDesiredMotorState(this.desiredPosition + change);
     }
 
-    public void reset() {
-        encoder.setPosition(0);
-    }
+    // public void reset() {
+    //     encoder.setPosition(0);
+    // }
     
     
     
