@@ -60,19 +60,22 @@ public class RobotContainer {
   private final PhotonCamera photonCamera = new PhotonCamera("IMX219");
   private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(photonCamera, drive);
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
-  private Map<String, Command> eventMap;
+  private HashMap<String, Command> eventMap;
 
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("FullAuto", new PathConstraints(4, 3));
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("please work oh god please", new PathConstraints(4, 3));
   // This is just an example event map. It would be better to have a constant, global event map
   // in your code that will be used by all path following commands.
-  //eventMap = new HashMap<>();
   
+
+  HashMap<String, Command> eventMap1 = new HashMap<>();
+  eventMap.put("marker1", new PrintCommand("hi"));
   //eventMap.put("extend arm", armSetpoints.cubeSecondLevel());
   //eventMap.put("score cube lvl 2", new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
   //eventMap.put("marker1", new PrintCommand("Passed marker 1"));
   // eventMap.put("intakeDown", new IntakeDown());
 
   // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want to create an auto command. A good place to put this is in RobotContainer along with your subsystems.
+
 
   SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
     poseEstimator::getCurrentPose,
