@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
           camera1.setResolution(640, 480);
           CvSink cvSink = CameraServer.getVideo();
           CvSource outputStream = CameraServer.putVideo("rectangle", 640, 480);
-
+          
           Mat mat = new Mat();
 
         while (!Thread.interrupted()) {
@@ -61,10 +61,12 @@ public class Robot extends TimedRobot {
             outputStream.notifyError(cvSink.getError());
             continue;
         }
-        Imgproc.rectangle(mat, new Point(100, 100), new Point(400, 400), new Scalar(255, 255, 255), 5);
+        Imgproc.rectangle(mat, new Point(100, 100), new Point(640, 480), new Scalar(255, 255, 255), 5);
         outputStream.putFrame(mat);
       }
     });
+    m_visionThread.setDaemon(true);
+    m_visionThread.start();
   }
 
   /**

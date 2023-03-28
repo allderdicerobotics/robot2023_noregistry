@@ -83,7 +83,11 @@ public final class Constants {
         public static final class Drivetrain {
 
             public static final Translation2d[] MODULE_LOCATIONS = {
+<<<<<<< HEAD
                 new Translation2d(0.381, 0.381), //.2159
+=======
+                new Translation2d(0.381, 0.381), //.2159 381
+>>>>>>> c097c24354fbec1e1fb3ff82a5dd0f5e0e679c00
                 new Translation2d(0.381, -0.381),
                 new Translation2d(-0.381, 0.381),
                 new Translation2d(-0.381, -0.381)
