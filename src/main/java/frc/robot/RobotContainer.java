@@ -60,7 +60,7 @@ public class RobotContainer {
   private final PhotonCamera photonCamera = new PhotonCamera("IMX219");
   private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(photonCamera, drive);
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
-  private HashMap<String, Command> eventMap;
+  //private HashMap<String, Command> eventMap;
 
   PathPlannerTrajectory examplePath = PathPlanner.loadPath("please work oh god please", new PathConstraints(4, 3));
   // This is just an example event map. It would be better to have a constant, global event map
