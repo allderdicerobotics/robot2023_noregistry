@@ -62,7 +62,7 @@ public class RobotContainer {
   private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(photonCamera, drive);
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
 
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("hi", new PathConstraints(4, 3));
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("simple", new PathConstraints(4, 3));
 
 // This is just an example event map. It would be better to have a constant, global event map
 // in your code that will be used by all path following commands.
@@ -154,8 +154,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void autoPath() {
-    eventMap.put("raise arm", armSetpoints.cubeSecondLevel());
-    eventMap.put("eject", new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
+    eventMap.put("move arm", armSetpoints.cubeSecondLevel());
   }
   private void configureButtonBindings() {
     // new JoystickButton(m_driverController, Button.kA.value)
