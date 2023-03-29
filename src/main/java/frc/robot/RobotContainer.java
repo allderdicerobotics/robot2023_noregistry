@@ -23,6 +23,7 @@ import frc.robot.subsystems.Tower;
 import frc.robot.subsystems.WheelClaw;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
@@ -60,22 +61,26 @@ public class RobotContainer {
   private final PhotonCamera photonCamera = new PhotonCamera("IMX219");
   private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(photonCamera, drive);
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
-  //private HashMap<String, Command> eventMap;
 
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("please work oh god please", new PathConstraints(4, 3));
-  // This is just an example event map. It would be better to have a constant, global event map
-  // in your code that will be used by all path following commands.
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("simple", new PathConstraints(4, 3));
+
+// This is just an example event map. It would be better to have a constant, global event map
+// in your code that will be used by all path following commands.
+  HashMap<String, Command> eventMap = new HashMap<>();
+  
   
 
-  HashMap<String, Command> eventMap1 = new HashMap<>();
-  eventMap.put("marker1", new PrintCommand("hi"));
+  // PathPlannerTrajectory examplePath = PathPlanner.loadPath("please work oh god please", new PathConstraints(4 ,3));
+  // //"please work oh god please", new PathConstraints(4, 3));
+  // // This is just an example event map. It would be better to have a constant, global event map
+  // // in your code that will be used by all path following commands.
+  // eventMap = new HashMap<>();
+  
   //eventMap.put("extend arm", armSetpoints.cubeSecondLevel());
   //eventMap.put("score cube lvl 2", new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
-  //eventMap.put("marker1", new PrintCommand("Passed marker 1"));
   // eventMap.put("intakeDown", new IntakeDown());
 
   // Create the AutoBuilder. This only needs to be created once when robot code starts, not every time you want to create an auto command. A good place to put this is in RobotContainer along with your subsystems.
-
 
   SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
     poseEstimator::getCurrentPose,
@@ -148,6 +153,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
+  private void autoPath() {
+    eventMap.put("move arm", armSetpoints.cubeSecondLevel());
+  }
   private void configureButtonBindings() {
     // new JoystickButton(m_driverController, Button.kA.value)
     //     .whileTrue(new InstantCommand(m_wheelClaw::spinIn));

@@ -71,6 +71,7 @@ public class Arm extends SubsystemBase {
 
         SparkMaxPIDController pid = armMotor.getPIDController();
         encoder = armMotor.getEncoder();
+        //encoder.setpos
         int smartMotionSlot = 0;
         pid.setP(0.0003);
         pid.setI(0.000001);
@@ -105,7 +106,8 @@ public class Arm extends SubsystemBase {
             ); 
             */
         
-        if (hallEffect.get()) {
+        if (!hallEffect.get()) {
+            System.out.println("Resetting encoder");
             encoder.setPosition(0);
             //armMotor.stopMotor();
             //if (angle < encoder.getPosition()) {
@@ -118,21 +120,21 @@ public class Arm extends SubsystemBase {
         this.desiredPosition = angle;
     }
 
-    public double limitAccWhenArmUp() {
-        if (encoder.getPosition() > 30) {
-            double maxAcc = 0.0075;
-            return maxAcc; 
-        }
-        return desiredPosition;
-    }
+    // public double limitAccWhenArmUp() {
+    //     if (encoder.getPosition() > 30) {
+    //         double maxAcc = 0.0075;
+    //         return maxAcc; 
+    //     }
+    //     return desiredPosition;
+    // }
 
     public void changeDesiredState(double change) {
         setDesiredMotorState(this.desiredPosition + change);
     }
 
-    public void reset() {
-        encoder.setPosition(0);
-    }
+    // public void reset() {
+    //     encoder.setPosition(0);
+    // }
     
     
     
@@ -177,6 +179,7 @@ public class Arm extends SubsystemBase {
          else {
            //System.out.println("off");
          }
+         SmartDashboard.putBoolean("Arm Hall Effect", hallEffect.get());
      
      
         SmartDashboard.putNumber("Arm Angle", encoder.getPosition());
