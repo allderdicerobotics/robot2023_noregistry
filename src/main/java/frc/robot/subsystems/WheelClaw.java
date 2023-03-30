@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import javax.swing.text.Utilities;
+
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
@@ -7,6 +9,7 @@ import com.revrobotics.CANSparkMax.ControlType;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -52,6 +55,17 @@ public class WheelClaw extends SubsystemBase {
 
     public void spinOut() {
         setVelocity(-.5);
+    }
+    
+    public void fullOuttake() {
+        double timeToRun = 3;
+        double initTime = Timer.getFPGATimestamp();
+        setVelocity(-0.4);
+        while (Timer.getFPGATimestamp()-initTime <= timeToRun){
+            continue;
+        }
+        setVelocity(0);
+
     }
 
     public void spinStop() {

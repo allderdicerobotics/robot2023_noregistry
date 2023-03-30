@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.PS4Controller;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AlignToScoreCommand;
 import frc.robot.commands.ArmSetpoints;
+import frc.robot.commands.ArmWheelClawGroup;
 import frc.robot.misc.Constants;
 import frc.robot.misc.ControlConstants;
 import frc.robot.subsystems.Arm;
@@ -61,8 +62,9 @@ public class RobotContainer {
   private final PhotonCamera photonCamera = new PhotonCamera("IMX219");
   private final PoseEstimatorSubsystem poseEstimator = new PoseEstimatorSubsystem(photonCamera, drive);
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
+  private final ArmWheelClawGroup armWheelClawGroup = new ArmWheelClawGroup(arm, tower, wheelClaw);
 
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("simple", new PathConstraints(4, 3));
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("New New Path", new PathConstraints(4, 1));
 
 // This is just an example event map. It would be better to have a constant, global event map
 // in your code that will be used by all path following commands.
@@ -86,10 +88,10 @@ public class RobotContainer {
     poseEstimator::getCurrentPose,
     poseEstimator::setCurrentPose,
     drive.kinematics,
-    new PIDConstants(0.5, 0, 0),
-    new PIDConstants(1.0, 0, 0),
+    new PIDConstants(ControlConstants.Driving.DRIVE_KP, 0, 0), //0.5
+    new PIDConstants(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD), //0.5
     drive::setModuleStates,
-    eventMap,
+    autoPath(eventMap),
     true,
     drive
   );
@@ -153,8 +155,9 @@ public class RobotContainer {
    * edu.wpi.first.wpilibj.Joystick} or {@link XboxController}), and then calling passing it to a
    * {@link JoystickButton}.
    */
-  private void autoPath() {
-    eventMap.put("move arm", armSetpoints.cubeSecondLevel());
+  private HashMap<String,Command> autoPath(HashMap<String,Command> eventMap) {
+    eventMap.put("lift arm", armWheelClawGroup.autoSecondLevelCube());
+    return eventMap;
   }
   private void configureButtonBindings() {
     // new JoystickButton(m_driverController, Button.kA.value)
