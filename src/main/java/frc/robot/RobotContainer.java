@@ -202,12 +202,11 @@ public class RobotContainer {
       goalPose,
       false
       ).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
-    scoreButton.onTrue(alignCmd);
+    scoreButton.toggleOnTrue(alignCmd);
     // rightTrigger.onTrue(new InstantCommand( () -> drive.stop()));
     
 
 
-    // TODO: MAY NOT WORK
   //   scoreButton.onTrue(new SwerveControllerCommand(poseEstimator.getScorePath(),
   //     poseEstimator::getCurrentPose,
   //     drive.kinematics,

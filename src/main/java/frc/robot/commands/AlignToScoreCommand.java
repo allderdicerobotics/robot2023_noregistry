@@ -60,6 +60,7 @@ public class AlignToScoreCommand extends CommandBase {
         Supplier<Pose2d> poseProvider,
         Pose2d goalPose,
         boolean useAllianceColor) {
+    
     this(drive, poseProvider, goalPose, DEFAULT_XY_CONSTRAINTS, DEFAULT_OMEGA_CONSTRAINTS, useAllianceColor);
   }
 
