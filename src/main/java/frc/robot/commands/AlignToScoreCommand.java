@@ -61,20 +61,24 @@ public class AlignToScoreCommand extends CommandBase {
   private final ProfiledPIDController thetaController = new ProfiledPIDController(ControlConstants.Align.TURNING_KP,ControlConstants.Align.TURNING_KI,ControlConstants.Align.TURNING_KD,DEFAULT_OMEGA_CONSTRAINTS);
   private final DriveSubsystem drive;
   private final Supplier<Pose2d> poseProvider;
-  private final Pose2d goalPose;
+  private final Pose2d goalPose = new Pose2d();
   private final boolean useAllianceColor;
+
+
 
   public AlignToScoreCommand(
         DriveSubsystem drive,
         Supplier<Pose2d> poseProvider,
+		Pose2d goalPose,
         boolean useAllianceColor) {
         
-    this(drive, poseProvider, DEFAULT_XY_CONSTRAINTS, DEFAULT_OMEGA_CONSTRAINTS, useAllianceColor);
+    this(drive, poseProvider, goalPose, DEFAULT_XY_CONSTRAINTS, DEFAULT_OMEGA_CONSTRAINTS, useAllianceColor);
   }
 
   public AlignToScoreCommand(
         DriveSubsystem drive,
         Supplier<Pose2d> poseProvider,
+		Pose2d goalPose,
         TrapezoidProfile.Constraints xyConstraints,
         TrapezoidProfile.Constraints omegaConstraints,
         boolean useAllianceColor) {
@@ -111,8 +115,8 @@ public class AlignToScoreCommand extends CommandBase {
 			var targetPose = tagPose.get().toPose2d();
 			if (poseProvider.get().getY() >= targetPose.getY()){
 				goalPose = targetPose.plus(Constants.Prop.SnakeEyesCamera.TAG_TO_POST);
-
-			}else{
+			}
+			else {
 				goalPose = targetPose.plus(Constants.Prop.SnakeEyesCamera.TAG_TO_POST.times(-1));
 			}
 		}
