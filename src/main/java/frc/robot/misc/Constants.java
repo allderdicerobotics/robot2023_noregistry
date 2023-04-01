@@ -88,7 +88,7 @@ public final class Constants {
                 new Translation2d(-0.381, 0.381),
                 new Translation2d(-0.381, -0.381)
             };
-
+            public static final double loopRateDT = 0.2; // https://www.chiefdelphi.com/t/field-relative-swervedrive-drift-even-with-simulated-perfect-modules/413892/15
             
             public static final double TURNING_ANG_VEL_MAX = Math.PI * 100;
             public static final double TURNING_ANG_ACC_MAX = Math.PI * 100;

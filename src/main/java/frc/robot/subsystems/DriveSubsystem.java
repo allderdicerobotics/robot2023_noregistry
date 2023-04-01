@@ -133,7 +133,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 		SmartDashboard.putNumber("robot angle", NavX.getAngle().getDegrees());
 
-		double gyroRate = NavX.getRate() * 0.25;
+		double gyroRate = NavX.getRate() * Constants.Prop.Drivetrain.loopRateDT;
 		Rotation2d correctedRotation = NavX.getAngle().minus(new Rotation2d(gyroRate));
 		double[] filteredInputs = joystickFiltering(xSpeed, ySpeed, rot);
 		var swerveModuleStates = kinematics.toSwerveModuleStates(
