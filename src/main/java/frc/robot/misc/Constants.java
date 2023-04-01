@@ -124,7 +124,10 @@ public final class Constants {
                 new Translation3d(0.1905,0.2159,0),
                 new Rotation3d(0.384,0,0)
             );
-
+            public static final Transform2d TAG_TO_POST = new Transform2d(
+                new Translation2d(0,0.5715),
+                new Rotation2d()
+            );
         }
 
         public static final class Tower {

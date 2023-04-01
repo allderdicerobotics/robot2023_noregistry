@@ -16,16 +16,25 @@ package frc.robot.commands;
 import frc.robot.misc.Constants;
 import frc.robot.misc.ControlConstants;
 
+import java.io.IOException;
+import java.util.Optional;
 import java.util.ResourceBundle.Control;
 import java.util.function.Supplier;
 
+import org.photonvision.PhotonCamera;
+
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.apriltag.AprilTagFieldLayout.OriginPosition;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
@@ -58,22 +67,19 @@ public class AlignToScoreCommand extends CommandBase {
   public AlignToScoreCommand(
         DriveSubsystem drive,
         Supplier<Pose2d> poseProvider,
-        Pose2d goalPose,
         boolean useAllianceColor) {
-    
-    this(drive, poseProvider, goalPose, DEFAULT_XY_CONSTRAINTS, DEFAULT_OMEGA_CONSTRAINTS, useAllianceColor);
+        
+    this(drive, poseProvider, DEFAULT_XY_CONSTRAINTS, DEFAULT_OMEGA_CONSTRAINTS, useAllianceColor);
   }
 
   public AlignToScoreCommand(
         DriveSubsystem drive,
         Supplier<Pose2d> poseProvider,
-        Pose2d goalPose,
         TrapezoidProfile.Constraints xyConstraints,
         TrapezoidProfile.Constraints omegaConstraints,
         boolean useAllianceColor) {
     this.drive = drive;
     this.poseProvider = poseProvider;
-    this.goalPose = goalPose;
     this.useAllianceColor = useAllianceColor;
     
     xController.setTolerance(TRANSLATION_TOLERANCE);
@@ -81,6 +87,36 @@ public class AlignToScoreCommand extends CommandBase {
 
     thetaController.enableContinuousInput(-Math.PI, Math.PI);
     thetaController.setTolerance(THETA_TOLERANCE);
+    AprilTagFieldLayout layout;
+		try {
+			layout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+			var alliance = DriverStation.getAlliance();
+			layout.setOrigin(alliance == Alliance.Blue ? OriginPosition.kBlueAllianceWallRightSide
+					: OriginPosition.kRedAllianceWallRightSide);
+          } catch (IOException e) {
+			DriverStation.reportError("Failed to load AprilTagFieldLayout", e.getStackTrace());
+			layout = null;
+		}
+
+	PhotonCamera photonCamera = new PhotonCamera("IMX219");
+	var pipelineResult = photonCamera.getLatestResult();
+	if (pipelineResult.hasTargets()) {
+		var target = pipelineResult.getBestTarget();
+		var fiducialId = target.getFiducialId();
+		// Get the tag pose from field layout - consider that the layout will be null if
+		// it failed to load
+		Optional<Pose3d> tagPose = layout == null ? Optional.empty()
+				: layout.getTagPose(fiducialId);
+		if (target.getPoseAmbiguity() <= .2 && fiducialId >= 0 && tagPose.isPresent()) {
+			var targetPose = tagPose.get().toPose2d();
+			if (poseProvider.get().getY() >= targetPose.getY()){
+				goalPose = targetPose.plus(Constants.Prop.SnakeEyesCamera.TAG_TO_POST);
+
+			}else{
+				goalPose = targetPose.plus(Constants.Prop.SnakeEyesCamera.TAG_TO_POST.times(-1));
+			}
+		}
+	}
 
     addRequirements(drive);
   }
