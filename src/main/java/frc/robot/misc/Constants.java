@@ -149,7 +149,7 @@ public final class Constants {
         public static final double ARM_FLOOR_CUBE = 30; //70
         public static final double ARM_FLOOR_CONE = 25; //55
         public static final double ARM_CUBE_2 = 30; //70
-        public static final double ARM_CONE_2 = 60; //140
+        public static final double ARM_CONE_2 = 58; //140
         public static final double ARM_CUBE_3 = 60; //150
         public static final double ARM_CONE_3 = 70; //165
         public static final double ARM_STATION = 0; //35

@@ -24,6 +24,7 @@ public class WheelClaw extends SubsystemBase {
 
     public WheelClaw() {
         initMotor();
+        motor.setSmartCurrentLimit(30);
     }
 
     public void initMotor() {
@@ -54,7 +55,7 @@ public class WheelClaw extends SubsystemBase {
     }
 
     public void spinOut() {
-        setVelocity(-.5);
+        setVelocity(-.1);
     }
     
     public void fullOuttake() {

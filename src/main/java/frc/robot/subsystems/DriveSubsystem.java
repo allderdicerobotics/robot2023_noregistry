@@ -132,13 +132,16 @@ public class DriveSubsystem extends SubsystemBase {
 		SmartDashboard.putNumber("rot", rot);
 
 		SmartDashboard.putNumber("robot angle", NavX.getAngle().getDegrees());
+
+		double gyroRate = NavX.getRate() * 0.25;
+		Rotation2d correctedRotation = NavX.getAngle().minus(new Rotation2d(gyroRate));
 		double[] filteredInputs = joystickFiltering(xSpeed, ySpeed, rot);
 		var swerveModuleStates = kinematics.toSwerveModuleStates(
 				fieldRelative
 						? ChassisSpeeds.fromFieldRelativeSpeeds(
 								filteredInputs[0] * Constants.Prop.Drivetrain.AXIS_SPEED_MAX,
 								filteredInputs[1] * Constants.Prop.Drivetrain.AXIS_SPEED_MAX,
-								filteredInputs[2] * Constants.Prop.Drivetrain.ANG_VEL_MAX, NavX.getAngle())// rot,
+								filteredInputs[2] * Constants.Prop.Drivetrain.ANG_VEL_MAX, correctedRotation)// rot,
 																											// m_gyro.getRotation2d())
 						: computeChassisSpeeds(filteredInputs[0], filteredInputs[1], filteredInputs[2]));
 		SwerveDriveKinematics.desaturateWheelSpeeds(

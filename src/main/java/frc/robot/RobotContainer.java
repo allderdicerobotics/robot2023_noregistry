@@ -188,7 +188,8 @@ public class RobotContainer {
     //playerStationButton.onTrue(m_armSetpoints.playerStation());
 
     cubePickupButton.onTrue(armSetpoints.cubeGround());
-    conePickupButton.onTrue(armSetpoints.coneGround());
+    //conePickupButton.onTrue(armSetpoints.coneGround());
+    conePickupButton.whileTrue(new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
 
     cubeSecondButton.onTrue(armSetpoints.cubeSecondLevel());
     coneSecondButton.onTrue(armSetpoints.coneSecondLevel());
