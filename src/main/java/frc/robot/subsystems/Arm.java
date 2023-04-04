@@ -46,7 +46,7 @@ public class Arm extends SubsystemBase {
 
     public Arm() {
 
-        armMotor.setSmartCurrentLimit(40);
+        armMotor.setSmartCurrentLimit(20);
         
         /*
             |------|                     |------|
@@ -74,7 +74,7 @@ public class Arm extends SubsystemBase {
         //encoder.setpos
         int smartMotionSlot = 0;
         pid.setP(0.0003);
-        pid.setI(0.000001);
+        pid.setI(0.000002);
         pid.setD(0);
         pid.setIZone(0);
         pid.setFF(0.0002);
@@ -106,14 +106,18 @@ public class Arm extends SubsystemBase {
             ); 
             */
         
-        if (!hallEffect.get()) {
-            System.out.println("Resetting encoder");
-            encoder.setPosition(0);
-            //armMotor.stopMotor();
-            //if (angle < encoder.getPosition()) {
-            //    return;
+        // if (!hallEffect.get()) {
+        //     SmartDashboard.putBoolean("resetting encoder", !hallEffect.get());
+        //     System.out.println("Resetting encoder");
+        //     encoder.setPosition(0);
+        //     //armMotor.stopMotor();
+        //     //if (angle < encoder.getPosition()) {
+        //     //    return;
+        //     }
+        // else {
+        //     SmartDashboard.putBoolean("resetting encoder", !hallEffect.get());
+        // }
         
-        }
 
         SparkMaxPIDController pid = armMotor.getPIDController();
         pid.setReference(angle, CANSparkMax.ControlType.kSmartMotion);
@@ -173,16 +177,15 @@ public class Arm extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if(!hallEffect.get()) {
-            //System.out.println("on");
-         }
-         else {
-           //System.out.println("off");
-         }
-         SmartDashboard.putBoolean("Arm Hall Effect", hallEffect.get());
-     
-     
+        // if (!hallEffect.get()) {
+        //     encoder.setPosition(0);
+        //     //armMotor.stopMotor();
+        //     //if (angle < encoder.getPosition()) {
+        //     //    return;
+        //     }
+        //SmartDashboard.putBoolean("Arm Hall Effect", (!hallEffect.get()));
         SmartDashboard.putNumber("Arm Angle", encoder.getPosition());
         SmartDashboard.putNumber("Arm Setpoint", desiredPosition);
+        SmartDashboard.putNumber("Arm Velocity", encoder.getVelocity());
     }
 }

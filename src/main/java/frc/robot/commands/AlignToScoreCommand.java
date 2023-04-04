@@ -35,10 +35,10 @@ import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveSubsystem;
-// import frc.robot.subsystems.LEDSubsystem;
 
 /**
  * Command to drive to a pose.
@@ -61,7 +61,7 @@ public class AlignToScoreCommand extends CommandBase {
   private final ProfiledPIDController thetaController = new ProfiledPIDController(ControlConstants.Align.TURNING_KP,ControlConstants.Align.TURNING_KI,ControlConstants.Align.TURNING_KD,DEFAULT_OMEGA_CONSTRAINTS);
   private final DriveSubsystem drive;
   private final Supplier<Pose2d> poseProvider;
-  private final Pose2d goalPose = new Pose2d();
+  private Pose2d goalPose;
   private final boolean useAllianceColor;
 
 
@@ -104,6 +104,7 @@ public class AlignToScoreCommand extends CommandBase {
 
 	PhotonCamera photonCamera = new PhotonCamera("IMX219");
 	var pipelineResult = photonCamera.getLatestResult();
+
 	if (pipelineResult.hasTargets()) {
 		var target = pipelineResult.getBestTarget();
 		var fiducialId = target.getFiducialId();
@@ -111,17 +112,18 @@ public class AlignToScoreCommand extends CommandBase {
 		// it failed to load
 		Optional<Pose3d> tagPose = layout == null ? Optional.empty()
 				: layout.getTagPose(fiducialId);
-		if (target.getPoseAmbiguity() <= .2 && fiducialId >= 0 && tagPose.isPresent()) {
-			var targetPose = tagPose.get().toPose2d();
-			if (poseProvider.get().getY() >= targetPose.getY()){
-				goalPose = targetPose.plus(Constants.Prop.SnakeEyesCamera.TAG_TO_POST);
-			}
-			else {
-				goalPose = targetPose.plus(Constants.Prop.SnakeEyesCamera.TAG_TO_POST.times(-1));
-			}
-		}
+		System.out.println("---------------------------------------------------------");
+		System.out.println(tagPose);
+		// if (target.getPoseAmbiguity() <= .2 && fiducialId >= 0 && tagPose.isPresent()) {
+		// 	var targetPose = tagPose.get().toPose2d();
+		// 	if (poseProvider.get().getY() >= targetPose.getY()){
+		// 		goalPose = targetPose.plus(Constants.Prop.SnakeEyesCamera.TAG_TO_POST);
+		// 	}
+		// 	else {
+		// 		goalPose = targetPose.plus(Constants.Prop.SnakeEyesCamera.TAG_TO_POST.times(-1));
+		// 	}
+		//}
 	}
-
     addRequirements(drive);
   }
 
@@ -129,7 +131,7 @@ public class AlignToScoreCommand extends CommandBase {
   @Override
   public void initialize() {
     resetPIDControllers();
-    var pose = goalPose;
+    Pose2d pose = new Pose2d();//goalPose;
     if (useAllianceColor && DriverStation.getAlliance() == DriverStation.Alliance.Red) {
       Translation2d transformedTranslation = new Translation2d(pose.getX(), 8.0137 - pose.getY()); // 8.0137 is the FIELD_WIDTH_METERS
       Rotation2d transformedHeading = pose.getRotation().times(-1);
@@ -154,17 +156,17 @@ public class AlignToScoreCommand extends CommandBase {
   public void execute() {
     var robotPose = poseProvider.get();
     // Drive to the goal
-    var xSpeed = xController.calculate(robotPose.getX(),goalPose.getX());
+    var xSpeed = 0;//xController.calculate(robotPose.getX(),goalPose.getX());
     if (xController.atGoal()) {
       xSpeed = 0;
     }
 
-    var ySpeed = yController.calculate(robotPose.getY(),goalPose.getY());
+    var ySpeed = 0;//yController.calculate(robotPose.getY(),goalPose.getY());
     if (yController.atGoal()) {
       ySpeed = 0;
     }
 
-    var omegaSpeed = thetaController.calculate(robotPose.getRotation().getRadians());
+    var omegaSpeed = 0;//thetaController.calculate(robotPose.getRotation().getRadians());
     if (thetaController.atGoal()) {
       omegaSpeed = 0;
     }

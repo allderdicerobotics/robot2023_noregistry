@@ -102,7 +102,8 @@ public class RobotContainer {
 
   Command fullAuto = autoBuilder.fullAuto(examplePath);
   Rotation2d zeroRot = new Rotation2d();
-  Pose2d goalPose = new Pose2d(14.5, 1.45, zeroRot);
+  //Pose2d goalPose = new Pose2d(14.5, 1.45, zeroRot);
+  Pose2d goalPose = new Pose2d(0,0,zeroRot);
   // The driver's controller
   PS4Controller m_driverController = new PS4Controller(Constants.Port.Driver.CONTROLLER);
   Joystick m_buttonBoard = new Joystick(Constants.Port.Operator.BUTTONBOARD);
@@ -115,15 +116,21 @@ public class RobotContainer {
   Trigger leftBumper = new JoystickButton(m_driverController, 5);
   Trigger rightBumper = new JoystickButton(m_driverController, 6);
   
-  Trigger cubePickupButton = new JoystickButton(m_buttonBoard,10);
-  Trigger conePickupButton = new JoystickButton(m_buttonBoard, 6);
-  Trigger stowInButton = new JoystickButton(m_buttonBoard, 11);
-  //Trigger playerStationButton = new JoystickButton(m_buttonBoard, );
-  Trigger cubeSecondButton = new JoystickButton(m_buttonBoard, 8);
-  Trigger coneSecondButton = new JoystickButton(m_buttonBoard, 7);
+  Trigger cubePickupButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.cubePickupButton); //10
+  Trigger conePickupButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.conePickupButton); //6
+
+  Trigger stowInButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.stowInButton); //11
+  Trigger playerStationButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.playerStation);
+  Trigger cubeSecondButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.cubeSecondButton); //8
+  Trigger coneSecondButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.coneSecondButton); //7
   // need more buttons
-  Trigger cubeThirdButton = new JoystickButton(m_buttonBoard, 4); 
-  Trigger coneThirdButton = new JoystickButton(m_buttonBoard, 9);
+  Trigger cubeThirdButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.cubeThirdButton); //4
+  Trigger coneThirdButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.coneThirdButton); //9
+  
+  Trigger intakeButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.intake);
+  Trigger outtakeButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.outtake);
+  Trigger microArmUpButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.microArmUp);
+  Trigger microArmDownButton = new JoystickButton(m_buttonBoard, Constants.Prop.Buttonboard.microArmDown);
 
 
 
@@ -185,17 +192,23 @@ public class RobotContainer {
 
     // button board
     stowInButton.onTrue(armSetpoints.stowInside());
-    //playerStationButton.onTrue(m_armSetpoints.playerStation());
+    playerStationButton.onTrue(armSetpoints.playerStation());
 
     cubePickupButton.onTrue(armSetpoints.cubeGround());
-    //conePickupButton.onTrue(armSetpoints.coneGround());
-    conePickupButton.whileTrue(new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
+    conePickupButton.onTrue(armSetpoints.coneGround());
+    //conePickupButton.whileTrue(new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
 
     cubeSecondButton.onTrue(armSetpoints.cubeSecondLevel());
     coneSecondButton.onTrue(armSetpoints.coneSecondLevel());
 
     cubeThirdButton.onTrue(armSetpoints.cubeThirdLevel());
     coneThirdButton.onTrue(armSetpoints.coneThirdLevel());
+
+    intakeButton.whileTrue(new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
+    outtakeButton.whileTrue(new RunCommand(() -> wheelClaw.spinOut(), wheelClaw));
+
+    microArmUpButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(0.5)));
+    microArmDownButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-0.5)));
 
     var alignCmd = new AlignToScoreCommand(drive,
       poseEstimator::getCurrentPose, 
