@@ -31,7 +31,7 @@ public class ArmSetpoints {
     public Command cubeGround() {
       return Commands.sequence(
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_FLOOR_CUBE)),
-        new WaitCommand(1.5),
+        new WaitCommand(0.75),
         new InstantCommand(tower::moveForward)
       );
     }
@@ -39,7 +39,7 @@ public class ArmSetpoints {
     public Command coneGround() {
       return Commands.sequence(
         new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_FLOOR_CONE)),
-        new WaitCommand(1.5),
+        new WaitCommand(0.75),
         new InstantCommand(tower::moveForward)
       );
     }
