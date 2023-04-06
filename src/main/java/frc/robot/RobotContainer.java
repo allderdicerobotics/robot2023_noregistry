@@ -14,8 +14,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.commands.AlignToScoreCommand;
 import frc.robot.commands.ArmSetpoints;
 import frc.robot.commands.ArmWheelClawGroup;
+import frc.robot.commands.CSBalance;
 import frc.robot.misc.Constants;
 import frc.robot.misc.ControlConstants;
+import frc.robot.misc.NavX;
 import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.Claw;
 import frc.robot.subsystems.DriveSubsystem;
@@ -64,13 +66,18 @@ public class RobotContainer {
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
   private final ArmWheelClawGroup armWheelClawGroup = new ArmWheelClawGroup(arm, tower, wheelClaw);
 
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("New New Path", new PathConstraints(4, 1));
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("New New Path", new PathConstraints(1, 1));
 
 // This is just an example event map. It would be better to have a constant, global event map
 // in your code that will be used by all path following commands.
   HashMap<String, Command> eventMap = new HashMap<>();
-  
-  
+
+
+  public final NavX navx = new NavX();
+
+  // FOR CHARGE BALANCIN IN AUTON
+  public final Command csbalance_command = new CSBalance(drive, navx::get_quaternion);
+
 
   // PathPlannerTrajectory examplePath = PathPlanner.loadPath("please work oh god please", new PathConstraints(4 ,3));
   // //"please work oh god please", new PathConstraints(4, 3));
@@ -88,8 +95,11 @@ public class RobotContainer {
     poseEstimator::getCurrentPose,
     poseEstimator::setCurrentPose,
     drive.kinematics,
-    new PIDConstants(ControlConstants.Driving.DRIVE_KP, 0, 0), //0.5
-    new PIDConstants(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD), //0.5
+
+    new PIDConstants(ControlConstants.Driving.DRIVE_KP, 0, 0),
+    new PIDConstants(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD),
+    //new PIDConstants(0.5,0,0),//ControlConstants.Driving.DRIVE_KP, 0, 0), //0.5
+    //new PIDConstants(0.3,0,0), //ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD), //0.5
     drive::setModuleStates,
     autoPath(eventMap),
     true,
@@ -207,15 +217,16 @@ public class RobotContainer {
     intakeButton.whileTrue(new RunCommand(() -> wheelClaw.spinIn(), wheelClaw));
     outtakeButton.whileTrue(new RunCommand(() -> wheelClaw.spinOut(), wheelClaw));
 
-    microArmUpButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(0.5)));
-    microArmDownButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-0.5)));
+    microArmUpButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(2)));
+    microArmDownButton.onTrue(new InstantCommand(() -> arm.changeDesiredState(-2)));
 
     var alignCmd = new AlignToScoreCommand(drive,
       poseEstimator::getCurrentPose, 
       goalPose,
       false
       ).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
-    scoreButton.toggleOnTrue(alignCmd);
+    //scoreButton.toggleOnTrue(alignCmd);
+    scoreButton.onTrue(csbalance_command);
     // rightTrigger.onTrue(new InstantCommand( () -> drive.stop()));
     
 

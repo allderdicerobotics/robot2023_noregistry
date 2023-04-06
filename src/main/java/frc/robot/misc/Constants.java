@@ -154,26 +154,26 @@ public final class Constants {
         public static final double ARM_FLOOR_CUBE = 31; //70
         public static final double ARM_FLOOR_CONE = 25; //55
         public static final double ARM_CUBE_2 = 30; //70
-        public static final double ARM_CONE_2 = 61; //140
+        public static final double ARM_CONE_2 = 60; //140
         public static final double ARM_CUBE_3 = 63; //150
         public static final double ARM_CONE_3 = 74; //165
-        public static final double ARM_STATION = 63; //35
+        public static final double ARM_STATION = 60.5; //35
         
     }
 
     public static final class Buttonboard {
-        public static final int cubePickupButton = 12; //10
-        public static final int conePickupButton = 11; //6
-        public static final int stowInButton = 2; //11
-        public static final int playerStation = 1; 
-        public static final int cubeSecondButton = 8; //8
-        public static final int coneSecondButton = 7; //7
-        public static final int cubeThirdButton = 4; //4
-        public static final int coneThirdButton = 3; //9
-        public static final int intake = 9;
-        public static final int outtake = 10;
-        public static final int microArmUp = 6;
-        public static final int microArmDown = 5;
+        public static final int cubePickupButton = 1; //10
+        public static final int conePickupButton = 2; //6
+        public static final int stowInButton = 11; //11
+        public static final int playerStation = 12; 
+        public static final int cubeSecondButton = 5; //8
+        public static final int coneSecondButton = 6; //7
+        public static final int cubeThirdButton = 9; //4
+        public static final int coneThirdButton = 10; //9
+        public static final int intake = 3;
+        public static final int outtake = 4;
+        public static final int microArmUp = 7;
+        public static final int microArmDown = 8;
        
     }
     }
