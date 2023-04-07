@@ -31,7 +31,7 @@ public class ArmWheelClawGroup {
     public Command autoSecondLevelCube() {
       ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
       return Commands.sequence(
-        new InstantCommand(() -> arm.setDesiredMotorState(Constants.Prop.Arm.ARM_CUBE_2)),
+        new InstantCommand(() -> arm.setDesiredMotorState(40)),// Constants.Prop.Arm.ARM_CUBE_2)),
         new WaitCommand(1),
         new InstantCommand(() -> wheelClaw.fullOuttake(3)),
         new WaitCommand(0.5),

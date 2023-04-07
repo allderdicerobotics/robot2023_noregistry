@@ -66,7 +66,7 @@ public class RobotContainer {
   private final ArmSetpoints armSetpoints = new ArmSetpoints(arm, tower);
   private final ArmWheelClawGroup armWheelClawGroup = new ArmWheelClawGroup(arm, tower, wheelClaw);
 
-  PathPlannerTrajectory examplePath = PathPlanner.loadPath("New New Path", new PathConstraints(1, 1));
+  PathPlannerTrajectory examplePath = PathPlanner.loadPath("New New Path Copy Copy", new PathConstraints(1, 1));
 
 // This is just an example event map. It would be better to have a constant, global event map
 // in your code that will be used by all path following commands.
@@ -98,7 +98,7 @@ public class RobotContainer {
 
     new PIDConstants(ControlConstants.Driving.DRIVE_KP, 0, 0),
     new PIDConstants(ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD),
-    //new PIDConstants(0.5,0,0),//ControlConstants.Driving.DRIVE_KP, 0, 0), //0.5
+    //new PIDConstants(0.75,0.25,0),//ControlConstants.Driving.DRIVE_KP, 0, 0), //0.5
     //new PIDConstants(0.3,0,0), //ControlConstants.Driving.TURNING_KP, ControlConstants.Driving.TURNING_KI, ControlConstants.Driving.TURNING_KD), //0.5
     drive::setModuleStates,
     autoPath(eventMap),

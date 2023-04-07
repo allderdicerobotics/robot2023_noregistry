@@ -60,7 +60,7 @@ public class WheelClaw extends SubsystemBase {
     
     public void fullOuttake(double timeToRun) {
         double initTime = Timer.getFPGATimestamp();
-        setVelocity(-0.4);
+        setVelocity(-1);//0.4);
         while (Timer.getFPGATimestamp()-initTime <= timeToRun){
             continue;
         }
